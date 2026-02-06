@@ -9,6 +9,5 @@
 
    installation
    data_preparation
-   compile_nn
    run_a_net
 

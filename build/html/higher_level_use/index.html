@@ -60,7 +60,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id1">琴枢微处理器简介</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id2">TruSynapse 框架定位与目标</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id3">软件架构与层次视图</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id4">支持的应用场景（全栈神经网络/外源神经网络）</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction/foundational_concepts/index.html">基础概念</a><ul>
@@ -72,8 +71,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html">子网执行体</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id2">子网执行体概述</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id3">子网执行体结构</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id4">子网执行体数据结构</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id5">子网执行体内存管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#snndata">子网执行体数据结构SNNData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id4">子网执行体内存管理</a></li>
 </ul>
 </li>
 </ul>
@@ -88,60 +87,62 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/data_preparation.html">数据准备</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/data_preparation.html#id2">神经网络描述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/data_preparation.html#id2">神经网络</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../getting_started/data_preparation.html#id3">权重文件</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../getting_started/data_preparation.html#id4">输入数据</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/compile_nn.html">编译神经网络</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/compile_nn.html#id2">神经网络函数构建</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/compile_nn.html#id3">连接关系转换</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/compile_nn.html#id">神经元ID分配</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/compile_nn.html#id4">聚类映射算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/compile_nn.html#id5">映射结果保存与加载</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/run_a_net.html">全栈神经网络运行</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id2">全栈神经网络介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id3">构建神经网络</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id4">转换连接关系数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#spike">输入spike数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#frameworknfu">调用framework构造NFU子网执行体</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#nfu">执行NFU子网执行体</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/run_subnet_executor.html">运行子网执行体</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_subnet_executor.html#id2">运行命令</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_subnet_executor.html#id3">参数配置</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">示例</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/mlp.html">多层感知机 (MLP)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../examples/mlp.html#id1">模型概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../examples/mlp.html#id2">实现代码</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../examples/mlp.html#id3">运行结果</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/cnn.html">卷积神经网络 (CNN)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../examples/cnn.html#id1">模型概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../examples/cnn.html#id2">实现代码</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../examples/cnn.html#id3">运行结果</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/resnet.html">残差网络 (ResNet)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../examples/resnet.html#id1">模型概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../examples/resnet.html#id2">实现代码</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../examples/resnet.html#id3">运行结果</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ring.html">Ring 网络</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../examples/ring.html#id1">模型概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../examples/ring.html#id2">实现代码</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../examples/ring.html#id3">运行结果</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/transformer.html">Transformer</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../examples/transformer.html#id1">模型概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../examples/transformer.html#id2">实现代码</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../examples/transformer.html#id3">运行结果</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/run_a_net.html#id5">外源神经网络应用</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id6">外源神经网络介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id7">实例NFU子网执行体</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id8">准备子网执行体各数据段数据</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../applications/index.html">应用场景</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/index.html">示例</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/mlp.html">多层感知机 (MLP)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models/mlp.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/mlp.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/mlp.html#id3">运行结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models/cnn.html">卷积神经网络 (CNN)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models/cnn.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/cnn.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/cnn.html#id3">运行结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models/resnet.html">残差网络 (ResNet)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models/resnet.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/resnet.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/resnet.html#id3">运行结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models/lnn.html">液态神经网络（LNN）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models/lnn.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/lnn.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/lnn.html#id3">运行结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models/transformer.html">Transformer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models/transformer.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/transformer.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/transformer.html#id3">运行结果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../applications/index.html">应用案例</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../applications/image_classification.html">图像分类</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id2">应用概述</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id3">实现方案</a></li>

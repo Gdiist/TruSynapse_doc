@@ -13,7 +13,7 @@ Welcome to TruSynapse's Documentation!
 
    introduction/index
    getting_started/index
-   examples/index
+   models/index
    applications/index
    higher_level_use/index
    api_documentation/index

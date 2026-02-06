@@ -19,10 +19,4 @@ Welcome to TruSynapse's Documentation!
    api_documentation/index
    
 
-索引和表格
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
