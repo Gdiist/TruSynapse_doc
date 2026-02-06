@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数据准备 &mdash; TruSynapse 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="编译神经网络" href="compile_nn.html" />
+    <link rel="prev" title="安装指南" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TruSynapse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">目录:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">介绍</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../introduction/tru_synapse_framework.html">TruSynapse 框架</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id1">琴枢微处理器简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id2">TruSynapse 框架定位与目标</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id3">软件架构与层次视图</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction/foundational_concepts/index.html">基础概念</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../introduction/foundational_concepts/data_organization_and_compression.html">神经网络数据组织与压缩</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/data_organization_and_compression.html#id2">数据类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/data_organization_and_compression.html#id3">连接关系压缩与存储方式</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html">子网执行体</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id2">子网执行体概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id3">子网执行体结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id4">子网执行体数据结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id5">子网执行体内存管理</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">快速开始</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="installation.html">安装指南</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#id2">系统要求</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#id3">安装步骤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#id4">验证安装</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">数据准备</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">神经网络</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">权重文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">输入数据</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="compile_nn.html">编译神经网络</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="compile_nn.html#id2">神经网络函数构建</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compile_nn.html#id3">连接关系转换</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compile_nn.html#id">神经元ID分配</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compile_nn.html#id4">聚类映射算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compile_nn.html#id5">映射结果保存与加载</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="run_a_net.html">运行网络</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id2">运行命令</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id3">参数配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">示例</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/mlp.html">多层感知机 (MLP)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/mlp.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/mlp.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/mlp.html#id3">运行结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/cnn.html">卷积神经网络 (CNN)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/cnn.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/cnn.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/cnn.html#id3">运行结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/resnet.html">残差网络 (ResNet)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/resnet.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/resnet.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/resnet.html#id3">运行结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ring.html">Ring 网络</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/ring.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/ring.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/ring.html#id3">运行结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/transformer.html">Transformer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/transformer.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/transformer.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/transformer.html#id3">运行结果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../applications/index.html">应用场景</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../applications/image_classification.html">图像分类</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id2">应用概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id3">实现方案</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id4">性能评估</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../applications/speech_recognition.html">语音识别</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id2">应用概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id3">实现方案</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id4">性能评估</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../applications/autonomous_driving.html">自动驾驶</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../applications/autonomous_driving.html#id2">应用概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/autonomous_driving.html#id3">实现方案</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/autonomous_driving.html#id4">性能评估</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../applications/brain_simulation.html">脑仿真</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../applications/brain_simulation.html#id2">应用概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/brain_simulation.html#id3">实现方案</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/brain_simulation.html#id4">性能评估</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../higher_level_use/index.html">高级使用</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../higher_level_use/neuron_model.html">神经元模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../higher_level_use/neuron_model.html#id2">模型介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../higher_level_use/neuron_model.html#id3">参数说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../higher_level_use/neuron_model.html#id4">使用示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api_documentation/index.html">API 文档</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api_documentation/index.html#id1">核心 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_documentation/index.html#id2">工具函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_documentation/index.html#id3">配置选项</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TruSynapse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">快速开始</a></li>
+      <li class="breadcrumb-item active">数据准备</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting_started/data_preparation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>数据准备<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h1>
+<section id="id2">
+<h2>神经网络<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<p>TODO:</p>
+</section>
+<section id="id3">
+<h2>权重文件<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<p>TODO:</p>
+</section>
+<section id="id4">
+<h2>输入数据<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<p>TODO:</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="安装指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="compile_nn.html" class="btn btn-neutral float-right" title="编译神经网络" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Gdiist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

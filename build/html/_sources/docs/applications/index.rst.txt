@@ -1,0 +1,12 @@
+应用场景
+========
+
+本部分展示 TruSynapse 在各个领域的应用。
+
+.. toctree::
+   :maxdepth: 2
+
+   image_classification
+   speech_recognition
+   autonomous_driving
+   brain_simulation
