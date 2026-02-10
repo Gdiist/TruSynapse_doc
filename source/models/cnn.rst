@@ -14,74 +14,76 @@
 
 输出层：示例中包含10个神经元，表明将图像分为10类，与隐藏层2之间的连接方式为全连接。
 
+所以：本示例总共包含19610个神经元，包含1030976条连接关系
+
 实现代码
 --------
 .. code-block:: python
     :linenos:
 
-from snntorch import functional
+    from snntorch import functional
 
-import snntorch as snn
+    import snntorch as snn
 
-import torch.nn as nn
+    import torch.nn as nn
 
-import pickle
+    import pickle
 
-#该示例中网络结构用户可以自定义，包括通道数、卷积核、步长等信息，以下为示例代码
+    #该示例中网络结构用户可以自定义，包括通道数、卷积核、步长等信息，以下为示例代码
 
-class MnistConvSNN(nn.Module):
+    class MnistConvSNN(nn.Module):
 
-    def __init__(self, beta=0.9):
+        def __init__(self, beta=0.9):
 
-        super(MnistConvSNN, self).__init__()
+            super(MnistConvSNN, self).__init__()
 
-        self.conv1 = nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=1, bias=False)
+            self.conv1 = nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=1, bias=False)
 
-        self.lif1 = snn.Leaky(beta=beta, spike_grad=surrogate.fast_sigmoid())
+            self.lif1 = snn.Leaky(beta=beta, spike_grad=surrogate.fast_sigmoid())
 
-        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=2, padding=1, bias=False)
+            self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=2, padding=1, bias=False)
 
-        self.lif2 = snn.Leaky(beta=beta, spike_grad=surrogate.fast_sigmoid())
+            self.lif2 = snn.Leaky(beta=beta, spike_grad=surrogate.fast_sigmoid())
 
-        self.fc = nn.Linear(32 * 14 * 14, 10, bias=False)
+            self.fc = nn.Linear(32 * 14 * 14, 10, bias=False)
 
-        self.lif3 = snn.Leaky(beta=beta, spike_grad=surrogate.fast_sigmoid())
+            self.lif3 = snn.Leaky(beta=beta, spike_grad=surrogate.fast_sigmoid())
 
-    def forward(self, x):
+        def forward(self, x):
 
-        mem1 = self.lif1.init_leaky()
+            mem1 = self.lif1.init_leaky()
 
-        mem2 = self.lif2.init_leaky()
+            mem2 = self.lif2.init_leaky()
 
-        mem3 = self.lif3.init_leaky()
+            mem3 = self.lif3.init_leaky()
 
-        spk1, mem1 = self.lif1(self.conv1(x), mem1)          # [B,16,28,28]
+            spk1, mem1 = self.lif1(self.conv1(x), mem1)          # [B,16,28,28]
 
-        spk2, mem2 = self.lif2(self.conv2(spk1), mem2)       # [B,32,14,14]
+            spk2, mem2 = self.lif2(self.conv2(spk1), mem2)       # [B,32,14,14]
 
-        spk2_flat = spk2.view(spk2.size(0), -1)              # [B,6272]
+            spk2_flat = spk2.view(spk2.size(0), -1)              # [B,6272]
 
-        spk3, mem3 = self.lif3(self.fc(spk2_flat), mem3)     # [B,10]
+            spk3, mem3 = self.lif3(self.fc(spk2_flat), mem3)     # [B,10]
 
-        # 返回所有层 spk（以及最后一层 mem 方便算 pred）
+            # 返回所有层 spk（以及最后一层 mem 方便算 pred）
 
-        return spk1, spk2, spk3, mem3
+            return spk1, spk2, spk3, mem3
 
-connections = “/your/path/to/connection.pkl”
+    connections = “/your/path/to/connection.pkl”
 
-with open("/your/path/to/input.txt") as file:
+    with open("/your/path/to/input.txt") as file:
 
-    inputdata = file.readlines()
+        inputdata = file.readlines()
 
-def main():
+    def main():
 
-    data = functional.framework(net,connections,inputdata)
+        data = functional.framework(net,connections,inputdata)
 
-    net_output = functional.run(data)
+        net_output = functional.run(data)
     
-if __name__ == "__main__":
+    if __name__ == "__main__":
 
-    main()
+        main()
 
 运行结果
 --------
