@@ -6,7 +6,8 @@
 神经网络定义
 ------------
 
-首先需要对神经网络模型进行定义，比如一个MLP网络，定义示例如下：
+首先需要对神经网络模型进行定义，目前主要支持使用snntorch定义网络。其他框架的网络可以通过转换为NIR格式后使用。
+下面是一个MLP网络的定义示例：
 
 .. code-block:: python
     :linenos:
@@ -35,34 +36,33 @@
             spk3, mem3 = self.lif3(self.fc3(spk2), mem3)
             return spk3, mem3
 
+其他框架的网络通过NIR转换后的使用示例如下：
+.. code-block:: python
+    :linenos:
+
+    import nir
+    import nirtorch
+
+    to be continued...
+
+
+
 权重文件
 ----------
 
 权重文件通常是训练好的模型参数，保存为特定格式（如 .pkl 或 .pth 文件）。
-这些文件包含了神经网络中每层的权重和偏置信息，供后续映射使用。
+这些文件包含了神经网络中每层的权重信息，供后续映射使用。
 
 
 
 输入数据
 --------
 
-由于类脑芯片只支持0，1两种状态的输入，因此需要将原始输入数据（如图像、文本等）转换为二值化格式。
-例如，对于图像数据，可以使用以下方法进行二值化： 
+由于类脑芯片只支持0，1两种状态的输入，因此需要将原始输入数据（如图像、文本等）转换为二值化格式，并以一维数组的形式进行保存。
+常用的方式包括泊松编码、频率编码、时间编码等，具体方法取决于输入数据的特性和应用需求。
 
-.. code-block:: python
-    :linenos:
+我们也提供了常用的编码函数来生成二值化的 MNIST 数据集，供用户直接使用。
 
-    import numpy as np
-
-    def binarize_image(image, threshold=0.5):
-        """将图像数据二值化。
-        :param image: 输入图像，形状为 (C, H, W)
-        :param threshold: 二值化阈值
-        :return: 二值化后的图像，形状为 (C, H, W)
-        """
-        return (image > threshold).astype(np.uint8)
-
-我们也提供了函数 ``convert_mnist_to_spike`` 来生成二值化的 MNIST 数据集，供用户直接使用。
 该脚本会将 MNIST 数据集中的图像转换为二值化格式，并保存为 ``inputdata.txt``文件，方便后续加载和使用。
 
 .. code-block:: python

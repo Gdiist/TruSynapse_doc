@@ -6,13 +6,6 @@
 本示例展示如何使用 TruSynapse 框架将一个三层前向传播全连接神经网络映射到 NFU 并启动计算。
 文档按流程分为网络构建、连接转换、输入准备、构造子网执行体与执行五个部分。
 
-前置条件
---------
-
-- 已安装并能导入 TruSynapse 框架对应的 Python 包（例如 `functional`、 `SNNData`、 `SNNDriver` 等）。
-- 熟悉 PyTorch 风格的模块定义（示例中使用 `nn.Module`）。
-- 已导入必要模块（如 `torch`、 `snntorch` 等）。
-
 1. 构建神经网络（net）
 ----------------------
 描述网络结构（层次、每层神经元数、必要的神经元/层参数等），并将网络信息保存为变量（例如 `net`），供后续映射使用。
@@ -48,10 +41,6 @@
 
     net = SNNMLP()
 
-要点
-
-- 将网络实例保存为 `net`，供后续框架映射接口使用。
-- 确认每层的神经元数目与后续连接矩阵一致。
 
 2. 转换连接关系数据（connections）
 ----------------------------------
@@ -100,10 +89,6 @@
     connection_output = connection_trans(connection_origin_value[2], 1296, 1)
     connections = connection_input + connection_hidden1 + connection_output
 
-要点
-
-- 输入常为二维张量（邻接矩阵）、源层起始 ID 以及子模块数量。
-- 返回的三元组应与框架 `connections` 字段格式一致，检查 ID 编号是否越界。
 
 3. 准备输入脉冲（inputdata）
 -----------------------------
@@ -161,6 +146,17 @@
     :linenos:
 
     net_output = functional.run(data) 
+
+6. 处理输出结果
+----------------
+根据网络设计和应用需求，对输出结果进行处理。计算完成后的输出文件包括：
+
+- `outputdata.txt`：保存网络输出的脉冲数据
+- `performance_metrics.txt`：保存网络性能指标，如运行时间、延迟等
+
+outputdata.txt文件为 ``[batch, output_neuron_num]`` 的二维文本文件，每列对应一个输入样本的输出脉冲序列。
+
+用户需要进一步对输出数据进行解析和处理，以获得最终的推理结果或性能评估指标。
 
 
 导入已训练神经网络
@@ -262,8 +258,35 @@
 
 下面给出一个简单的示例，演示如何在 Trusynapse 中搭建一个混合神经网络。
 
+1. 定义混合神经网络结构
 
 .. code-block:: python
     :linenos:
 
-    to do: 添加混合神经网络示例代码
+    import snntorch as snn
+    import torch.nn as nn
+
+    class HybridNN(nn.Module):
+        def __init__(self):
+            super(HybridNN, self).__init__()
+            self.ann = nn.Sequential(
+                nn.Linear(784, 512),
+                nn.ReLU(),
+                nn.Linear(512, 256),
+                nn.ReLU(),
+                nn.Linear(256, 10)
+            )
+            self.snn = snn.Leaky(beta=0.9, spike_grad=surrogate.fast_sigmoid())
+
+        def forward(self, x):
+            x = self.ann(x)
+            x = self.snn(x)
+            return x
+
+2. 将 ANN 子网部署到 CPU 上执行，SNN 子网部署到 NFU 上执行
+
+.. code-block:: python
+    :linenos:
+
+    to be continued...
+
