@@ -1,36 +1,35 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>数据准备 &mdash; TruSynapse 0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/clipboard.min.js"></script>
-        <script src="../_static/copybutton.js"></script>
-        <script>let toggleHintShow = 'Click to show';</script>
-        <script>let toggleHintHide = 'Click to hide';</script>
-        <script>let toggleOpenOnPrint = 'true';</script>
-        <script src="../_static/togglebutton.js"></script>
-        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="全栈神经网络运行" href="run_a_net.html" />
+    <link rel="next" title="从头搭建神经网络" href="run_a_net.html" />
     <link rel="prev" title="安装指南" href="installation.html" /> 
 </head>
 
@@ -73,6 +72,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id2">子网执行体概述</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id3">子网执行体结构</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#snndata">子网执行体数据结构SNNData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id4">神经网络文件格式</a></li>
 </ul>
 </li>
 </ul>
@@ -83,6 +83,8 @@
 <li class="toctree-l2"><a class="reference internal" href="installation.html">安装指南</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="installation.html#id2">系统要求</a></li>
 <li class="toctree-l3"><a class="reference internal" href="installation.html#id3">安装步骤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#id4">大页内存配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#id5">执行体驱动</a></li>
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">数据准备</a><ul>
@@ -91,23 +93,49 @@
 <li class="toctree-l3"><a class="reference internal" href="#id4">输入数据</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="run_a_net.html">全栈神经网络运行</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="run_a_net.html">从头搭建神经网络</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id2">概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id3">前置条件</a></li>
-<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#net">1. 构建神经网络（net）</a></li>
-<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#connections">2. 转换连接关系数据（connections）</a></li>
-<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#inputdata">3. 准备输入脉冲（inputdata）</a></li>
-<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#nfu">4. 构造 NFU 子网执行体</a></li>
-<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id4">5. 执行 NFU 子网并获取输出</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#net">构建神经网络（net）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#connections">转换连接关系数据（connections）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#inputdata">准备输入脉冲（inputdata）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#nfu">构造 NFU 子网执行体</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id3">执行 NFU 子网并获取输出</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id4">处理输出结果</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="run_a_net.html#id5">外源神经网络应用</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="run_a_net.html#id5">导入已训练神经网络</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id6">概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id7">步骤（示例代码）</a></li>
-<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id8">注意事项（外源网络）</a></li>
-<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id9">附录：常见问题与检查项</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id7">步骤</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="run_a_net.html#id8">搭建混合神经网络</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id9">应用场景示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="transform_to_snndata.html">SNN网络处理流程示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transform_to_snndata.html#id1">1 SNN网络约束规范</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="transform_to_snndata.html#id2">1.1 网络实例化方式约束</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transform_to_snndata.html#bias">1.2 偏置（Bias）配置约束</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transform_to_snndata.html#id3">1.3 神经元层类型约束</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transform_to_snndata.html#id4">1.4 输入数据规范</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="transform_to_snndata.html#id5">1.4.1 输入值类型约束</a></li>
+<li class="toctree-l4"><a class="reference internal" href="transform_to_snndata.html#id6">1.4.2 输入脉冲文件存储格式约束</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="transform_to_snndata.html#id7">2 调用流程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="transform_to_snndata.html#id8">2.1 定义 SNN 网络结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transform_to_snndata.html#id9">2.2 数据提取与转换</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="transform_to_snndata.html#id10">2.2.1 调用框架函数提取并处理网络数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="transform_to_snndata.html#id11">2.2.2 参数加载与数据转换</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="transform_to_snndata.html#id12">2.3 SNN计算执行</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="transform_to_snndata.html#id13">3 数据文件说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transform_to_snndata.html#id14">4 输出说明</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../models/index.html">基础模型</a><ul>
@@ -146,14 +174,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../applications/index.html">应用案例</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../applications/image_classification.html">图像分类</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id2">应用概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id3">实现方案</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id4">性能评估</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#mnist-mlp">实现方案一 ：mnist-MLP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#mnist-sparse">实现方案二 ：mnist-sparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#mnist-conv">实现方案三 ：mnist-conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#cifar10-conv">实现方案四 ：cifar10-conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id3">性能评估</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../applications/speech_recognition.html">语音识别</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id2">应用概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id3">实现方案</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id4">性能评估</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#gsc-mlp">实现方案一 ：gsc-MLP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id3">性能评估</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../applications/autonomous_driving.html">自动驾驶</a><ul>
@@ -212,15 +243,16 @@
            <div itemprop="articleBody">
              
   <section id="id1">
-<h1>数据准备<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h1>
+<h1>数据准备<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
 <p>需要准备的数据包括：神经网络、网络训练权重及输入数据</p>
 <section id="id2">
-<h2>神经网络定义<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
-<p>首先需要对神经网络模型进行定义，比如一个MLP网络，定义示例如下：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">snntorch</span> <span class="k">as</span> <span class="nn">snn</span>
-<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-<span class="linenos"> 3</span><span class="k">class</span> <span class="nc">SNNMLP</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-<span class="linenos"> 4</span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_neuron_num</span><span class="o">=</span><span class="mi">784</span><span class="p">,</span> <span class="n">hidden1</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">hidden2</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">output_neuron_num</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
+<h2>神经网络定义<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>首先需要对神经网络模型进行定义，目前主要支持使用snntorch定义网络。其他框架的网络可以通过转换为NIR格式后使用。
+下面是一个MLP网络的定义示例：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">snntorch</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">snn</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="linenos"> 3</span><span class="k">class</span><span class="w"> </span><span class="nc">SNNMLP</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="linenos"> 4</span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_neuron_num</span><span class="o">=</span><span class="mi">784</span><span class="p">,</span> <span class="n">hidden1</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">hidden2</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">output_neuron_num</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
 <span class="linenos"> 5</span>        <span class="nb">super</span><span class="p">(</span><span class="n">SNNMLP</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 <span class="linenos"> 6</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">input_neuron_num</span><span class="p">,</span> <span class="n">hidden1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="linenos"> 7</span>        <span class="bp">self</span><span class="o">.</span><span class="n">lif1</span> <span class="o">=</span> <span class="n">snn</span><span class="o">.</span><span class="n">Leaky</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">,</span> <span class="n">spike_grad</span><span class="o">=</span><span class="n">surrogate</span><span class="o">.</span><span class="n">fast_sigmoid</span><span class="p">())</span>
@@ -231,7 +263,7 @@
 <span class="linenos">12</span>        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden2</span><span class="p">,</span> <span class="n">output_neuron_num</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="linenos">13</span>        <span class="bp">self</span><span class="o">.</span><span class="n">lif3</span> <span class="o">=</span> <span class="n">snn</span><span class="o">.</span><span class="n">Leaky</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">,</span> <span class="n">spike_grad</span><span class="o">=</span><span class="n">surrogate</span><span class="o">.</span><span class="n">fast_sigmoid</span><span class="p">())</span>
 <span class="linenos">14</span>
-<span class="linenos">15</span>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="linenos">15</span>    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="linenos">16</span>        <span class="n">mem1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lif1</span><span class="o">.</span><span class="n">init_leaky</span><span class="p">()</span>
 <span class="linenos">17</span>        <span class="n">mem2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lif2</span><span class="o">.</span><span class="n">init_leaky</span><span class="p">()</span>
 <span class="linenos">18</span>        <span class="n">mem3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lif3</span><span class="o">.</span><span class="n">init_leaky</span><span class="p">()</span>
@@ -242,51 +274,75 @@
 <span class="linenos">23</span>        <span class="k">return</span> <span class="n">spk3</span><span class="p">,</span> <span class="n">mem3</span>
 </pre></div>
 </div>
-</section>
-<section id="id3">
-<h2>权重文件<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
-<p>权重文件通常是训练好的模型参数，保存为特定格式（如 .pkl 或 .pth 文件）。
-这些文件包含了神经网络中每层的权重和偏置信息，供后续映射使用。</p>
-</section>
-<section id="id4">
-<h2>输入数据<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
-<p>由于类脑芯片只支持0，1两种状态的输入，因此需要将原始输入数据（如图像、文本等）转换为二值化格式。
-例如，对于图像数据，可以使用以下方法进行二值化：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="linenos">2</span>
-<span class="linenos">3</span><span class="k">def</span> <span class="nf">binarize_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
-<span class="linenos">4</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;将图像数据二值化。</span>
-<span class="linenos">5</span><span class="sd">    :param image: 输入图像，形状为 (C, H, W)</span>
-<span class="linenos">6</span><span class="sd">    :param threshold: 二值化阈值</span>
-<span class="linenos">7</span><span class="sd">    :return: 二值化后的图像，形状为 (C, H, W)</span>
-<span class="linenos">8</span><span class="sd">    &quot;&quot;&quot;</span>
-<span class="linenos">9</span>    <span class="k">return</span> <span class="p">(</span><span class="n">image</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<p>其他框架的网络通过NIR转换后的使用示例如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span><span class="w"> </span><span class="nn">nir</span>
+<span class="linenos">2</span><span class="kn">import</span><span class="w"> </span><span class="nn">nirtorch</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span><span class="n">to</span> <span class="n">be</span> <span class="n">continued</span><span class="o">...</span>
 </pre></div>
 </div>
-<p>我们也提供了函数 <code class="docutils literal notranslate"><span class="pre">convert_mnist_to_spike</span></code> 来生成二值化的 MNIST 数据集，供用户直接使用。
-该脚本会将 MNIST 数据集中的图像转换为二值化格式，并保存为 <a href="#id5"><span class="problematic" id="id6">``</span></a>inputdata.txt``文件，方便后续加载和使用。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
+</section>
+<section id="id3">
+<h2>权重文件<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>权重文件通常是训练好的模型参数，保存为特定格式（如 .pkl 或 .pth 文件）。
+这些文件包含了神经网络中每层的权重信息，供后续映射使用。可以通过加载权重文件并进行必要的转换来获取连接关系数据（connections），以适配 TruSynapse 框架的输入要求。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">connection_file</span> <span class="o">=</span> <span class="s2">&quot;./connection.pkl&quot;</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">def</span><span class="w"> </span><span class="nf">load_connection</span><span class="p">(</span><span class="n">connection_file</span><span class="p">):</span>
+<span class="linenos"> 4</span>    <span class="n">connection_origin_value</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 5</span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">connection_file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pk</span><span class="p">:</span>
+<span class="linenos"> 6</span>        <span class="n">connection_value</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pk</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">connection_value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="linenos"> 9</span>        <span class="k">if</span> <span class="s1">&#39;weight&#39;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+<span class="linenos">10</span>            <span class="n">connection_origin_value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">connection_origin_value</span><span class="p">:</span>
+<span class="linenos">13</span>        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="n">connection_input</span> <span class="o">=</span> <span class="n">connection_trans</span><span class="p">(</span><span class="n">connection_origin_value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">16</span>    <span class="n">connection_hidden1</span> <span class="o">=</span> <span class="n">connection_trans</span><span class="p">(</span><span class="n">connection_origin_value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">784</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">17</span>    <span class="n">connection_output</span> <span class="o">=</span> <span class="n">connection_trans</span><span class="p">(</span><span class="n">connection_origin_value</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">1296</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">18</span>    <span class="n">connections</span> <span class="o">=</span> <span class="n">connection_input</span> <span class="o">+</span> <span class="n">connection_hidden1</span> <span class="o">+</span> <span class="n">connection_output</span>
+<span class="linenos">19</span><span class="k">return</span> <span class="n">connections</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="n">load_connection</span><span class="p">(</span><span class="n">connection_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2>输入数据<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>由于类脑芯片只支持0，1两种状态的输入，因此需要将原始输入数据（如图像、文本等）转换为脉冲化格式，并以一维数组的形式进行保存。
+常用的方式包括率编码、时间编码等，具体方法取决于输入数据的特性和应用需求。可以使用 <code class="docutils literal notranslate"><span class="pre">snntorch.spikegen</span></code> 中内置的编码器将其转换为脉冲序列。</p>
+<p>下面的脚本展示了如何将 MNIST 数据集中的图像转换为二值化格式，并保存为 <a href="#id5"><span class="problematic" id="id6">``</span></a>inputdata.txt``文件，方便后续加载和使用。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">torchvision</span><span class="w"> </span><span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">transforms</span>
 <span class="linenos"> 3</span>
-<span class="linenos"> 4</span><span class="k">def</span> <span class="nf">convert_mnist_to_spike</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">thr</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">datapath</span><span class="o">=</span><span class="s1">&#39;./data&#39;</span><span class="p">):</span>
-<span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert MNIST images to binary (spike) representation.</span>
-<span class="linenos"> 7</span><span class="sd">    :param n: int</span>
-<span class="linenos"> 8</span><span class="sd">    数据批次大小，指定要处理的样本数量或每个输出批次中的样本数（默认：100）。</span>
-<span class="linenos"> 9</span><span class="sd">    :param thr: float</span>
-<span class="linenos">10</span><span class="sd">    脉冲转化的阈值，像素值大于该阈值将被视为脉冲（1），否则为非脉冲（0）（默认：0.5）。</span>
-<span class="linenos">11</span><span class="sd">    &quot;&quot;&quot;</span>
-<span class="linenos">12</span>    <span class="n">test</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">datapath</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="linenos">13</span>                          <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">())</span>
-<span class="linenos">14</span>    <span class="c1"># 脉冲转化</span>
-<span class="linenos">15</span>    <span class="n">spike</span> <span class="o">=</span> <span class="p">[(</span><span class="n">test</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">thr</span><span class="p">)</span><span class="o">.</span><span class="n">int</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-<span class="linenos">16</span>              <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="p">)))]</span>
-<span class="linenos">17</span>
-<span class="linenos">18</span>    <span class="n">inputdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">spike</span><span class="p">)</span>
-<span class="linenos">19</span>    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;inputdata.txt&#39;</span><span class="p">,</span> <span class="n">inputdata</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="linenos">20</span>    <span class="k">return</span> <span class="n">inputdata</span>
+<span class="linenos"> 4</span><span class="n">mport</span> <span class="n">torch</span>
+<span class="linenos"> 5</span><span class="n">rom</span> <span class="n">torchvision</span> <span class="kn">import</span><span class="w"> </span><span class="nn">datasets</span><span class="o">,</span><span class="w"> </span><span class="nn">transforms</span>
+<span class="linenos"> 6</span><span class="n">mport</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="linenos"> 7</span><span class="n">rom</span> <span class="n">snntorch</span> <span class="kn">import</span><span class="w"> </span><span class="nn">spikegen</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="k">def</span><span class="w"> </span><span class="nf">gen_mnist_spike</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">datapath</span><span class="o">=</span><span class="s1">&#39;./data&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;inputdata.txt&#39;</span><span class="p">):</span>
+<span class="linenos">10</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="linenos">11</span><span class="sd">    使用 spikegen.rate 将 MNIST 转换为脉冲并保存</span>
+<span class="linenos">12</span><span class="sd">    :param n: 处理的样本数量</span>
+<span class="linenos">13</span><span class="sd">    &quot;&quot;&quot;</span>
+<span class="linenos">14</span>    <span class="n">test</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">datapath</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="linenos">15</span>                          <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">())</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="n">data_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<span class="linenos">18</span>    <span class="n">images</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">data_loader</span><span class="p">))</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>    <span class="n">spike_data</span> <span class="o">=</span> <span class="n">spikegen</span><span class="o">.</span><span class="n">rate</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">num_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="linenos">21</span>
-<span class="linenos">22</span><span class="n">inputdata</span> <span class="o">=</span> <span class="n">convert_mnist_to_spike</span><span class="p">()</span>
+<span class="linenos">22</span>    <span class="n">final_data</span> <span class="o">=</span> <span class="n">spike_data</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">final_data</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>    <span class="k">return</span> <span class="n">final_data</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="n">inputdata</span> <span class="o">=</span> <span class="n">gen_mnist_spike</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -297,7 +353,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="安装指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="run_a_net.html" class="btn btn-neutral float-right" title="全栈神经网络运行" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="run_a_net.html" class="btn btn-neutral float-right" title="从头搭建神经网络" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

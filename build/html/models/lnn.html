@@ -1,32 +1,31 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>液态神经网络（LNN） &mdash; TruSynapse 0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/clipboard.min.js"></script>
-        <script src="../_static/copybutton.js"></script>
-        <script>let toggleHintShow = 'Click to show';</script>
-        <script>let toggleHintHide = 'Click to hide';</script>
-        <script>let toggleOpenOnPrint = 'true';</script>
-        <script src="../_static/togglebutton.js"></script>
-        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -58,21 +57,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">介绍</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../introduction/tru_synapse_framework.html">TruSynapse 框架</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id1">琴枢微处理器简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id2">TruSynapse 框架定位与目标</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id3">软件架构与层次视图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id2">软件架构与层次视图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id3">TruSynapse 框架定位与目标</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction/foundational_concepts/index.html">基础概念</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../introduction/foundational_concepts/data_organization_and_compression.html">神经网络数据组织与压缩</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/data_organization_and_compression.html#id2">数据类型</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/data_organization_and_compression.html#id3">连接关系压缩与存储方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/data_organization_and_compression.html#id3">存储与压缩</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/data_organization_and_compression.html#trusynapse">传统表示与 TruSynapse 方案</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html">子网执行体</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id2">子网执行体概述</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id3">子网执行体结构</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#snndata">子网执行体数据结构SNNData</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id4">子网执行体内存管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id4">神经网络文件格式</a></li>
 </ul>
 </li>
 </ul>
@@ -83,33 +83,62 @@
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/installation.html">安装指南</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../getting_started/installation.html#id2">系统要求</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../getting_started/installation.html#id3">安装步骤</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation.html#id4">验证安装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation.html#id4">大页内存配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation.html#id5">执行体驱动</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/data_preparation.html">数据准备</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/data_preparation.html#id2">神经网络</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/data_preparation.html#id2">神经网络定义</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../getting_started/data_preparation.html#id3">权重文件</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../getting_started/data_preparation.html#id4">输入数据</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/run_a_net.html">全栈神经网络运行</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id2">全栈神经网络介绍</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id3">构建神经网络</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id4">转换连接关系数据</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#spike">输入spike数据</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#frameworknfu">调用framework构造NFU子网执行体</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#nfu">执行NFU子网执行体</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/run_a_net.html">从头搭建神经网络</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id2">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#net">构建神经网络（net）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#connections">转换连接关系数据（connections）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#inputdata">准备输入脉冲（inputdata）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#nfu">构造 NFU 子网执行体</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id3">执行 NFU 子网并获取输出</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id4">处理输出结果</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/run_a_net.html#id5">外源神经网络应用</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id6">外源神经网络介绍</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id7">实例NFU子网执行体</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id8">准备子网执行体各数据段数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/run_a_net.html#id5">导入已训练神经网络</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id6">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id7">步骤</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/run_a_net.html#id8">搭建混合神经网络</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/run_a_net.html#id9">应用场景示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/transform_to_snndata.html">SNN网络处理流程示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id1">1 SNN网络约束规范</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id2">1.1 网络实例化方式约束</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/transform_to_snndata.html#bias">1.2 偏置（Bias）配置约束</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id3">1.3 神经元层类型约束</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id4">1.4 输入数据规范</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id5">1.4.1 输入值类型约束</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id6">1.4.2 输入脉冲文件存储格式约束</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">示例</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id7">2 调用流程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id8">2.1 定义 SNN 网络结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id9">2.2 数据提取与转换</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id10">2.2.1 调用框架函数提取并处理网络数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id11">2.2.2 参数加载与数据转换</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id12">2.3 SNN计算执行</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id13">3 数据文件说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/transform_to_snndata.html#id14">4 输出说明</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">基础模型</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="mlp.html">多层感知机 (MLP)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="mlp.html#id1">模型概述</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mlp.html#id2">实现代码</a></li>
@@ -145,14 +174,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../applications/index.html">应用案例</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../applications/image_classification.html">图像分类</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id2">应用概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id3">实现方案</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id4">性能评估</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#mnist-mlp">实现方案一 ：mnist-MLP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#mnist-sparse">实现方案二 ：mnist-sparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#mnist-conv">实现方案三 ：mnist-conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#cifar10-conv">实现方案四 ：cifar10-conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id3">性能评估</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../applications/speech_recognition.html">语音识别</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id2">应用概述</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id3">实现方案</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id4">性能评估</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#gsc-mlp">实现方案一 ：gsc-MLP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id3">性能评估</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../applications/autonomous_driving.html">自动驾驶</a><ul>
@@ -171,9 +203,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../higher_level_use/index.html">高级使用</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../higher_level_use/neuron_model.html">神经元模型</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../higher_level_use/neuron_model.html#id2">模型介绍</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../higher_level_use/neuron_model.html#id3">参数说明</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../higher_level_use/neuron_model.html#id4">使用示例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../higher_level_use/neuron_model.html#id2">7.1 汇编代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../higher_level_use/neuron_model.html#id3">7.2 事件语言</a></li>
 </ul>
 </li>
 </ul>
@@ -200,7 +231,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">示例</a></li>
+          <li class="breadcrumb-item"><a href="index.html">基础模型</a></li>
       <li class="breadcrumb-item active">液态神经网络（LNN）</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/models/lnn.rst.txt" rel="nofollow"> View page source</a>
@@ -212,18 +243,162 @@
            <div itemprop="articleBody">
              
   <section id="lnn">
-<h1>液态神经网络（LNN）<a class="headerlink" href="#lnn" title="Permalink to this heading"></a></h1>
+<h1>液态神经网络（LNN）<a class="headerlink" href="#lnn" title="Link to this heading"></a></h1>
 <section id="id1">
-<h2>模型概述<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
-<p>TODO:
-液态神经网络（LNN）是一种新型的神经网络架构，旨在通过模拟液态物质的动态特性来提高信息处理能力。与传统神经网络不同，LNN 通过引入时间和空间的连续性，使得网络能够在更高维度上进行学习和推理。这种方法特别适用于处理复杂的时序数据和动态系统。</p>
+<h2>模型概述<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>液态神经网络（LNN）是一种新型的神经网络架构，旨在通过模拟液态物质的动态特性来提高信息处理能力。与传统神经网络不同，LNN 通过引入时间和空间的连续性，使得网络能够在更高维度上进行学习和推理。这种方法特别适用于处理复杂的时序数据和动态系统。</p>
+<p>本示例模拟的眼线虫颈部神经，网络按照神经元类型不同可分为三层：</p>
+<p>第一层：包含I1L、I1R、I2L、I2R、I3、I4、I5、I6共8个神经元。</p>
+<p>第二层：包含M1、M2L、M2R、M3L、M3R、M4、M5、MCL、MCR、MI共10个神经元。</p>
+<p>第三层：包含NSML、NSMR共2个神经元。</p>
+<p>每层都与包括其自身的全部三层网络连接，共9组连接关系：</p>
+<p>第1组：连接第一层及其自身，稀疏连接。</p>
+<p>第2组：连接第一层及第二层，稀疏连接。</p>
+<p>第3组：连接第一层及第三层，稀疏连接。</p>
+<p>第4组：连接第二层及第一层，稀疏连接。</p>
+<p>第5组：连接第二层及其自身，稀疏连接。</p>
+<p>第6组：连接第二层及第三层，稀疏连接。</p>
+<p>第7组：连接第三层及第一层，稀疏连接。</p>
+<p>第8组：连接第三层及第二层，稀疏连接。</p>
+<p>第9组：连接第三层及其自身，稀疏连接。</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/net_exm_brain.png"><img alt="LNN" src="../_images/net_exm_brain.png" style="width: 50%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">图一：LNN网络结构示例</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
 </section>
 <section id="id2">
-<h2>实现代码<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
-<p>TODO: 添加实现代码</p>
+<h2>实现代码<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="kn">from</span><span class="w"> </span><span class="nn">snntorch</span><span class="w"> </span><span class="kn">import</span> <span class="n">functional</span>
+<span class="linenos">  2</span>
+<span class="linenos">  3</span><span class="kn">import</span><span class="w"> </span><span class="nn">snntorch</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">snn</span>
+<span class="linenos">  4</span>
+<span class="linenos">  5</span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="linenos">  6</span>
+<span class="linenos">  7</span><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="linenos">  8</span>
+<span class="linenos">  9</span><span class="c1">#网络与连接关系均可由用户自定义，包括神经网络层数、各层神经元数以及连接方式，示例为眼线虫颈部神经模拟</span>
+<span class="linenos"> 10</span>
+<span class="linenos"> 11</span><span class="n">betaI</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="linenos"> 12</span>
+<span class="linenos"> 13</span><span class="n">betaM</span> <span class="o">=</span> <span class="mf">0.9</span>
+<span class="linenos"> 14</span>
+<span class="linenos"> 15</span><span class="n">betaN</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="linenos"> 16</span>
+<span class="linenos"> 17</span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="linenos"> 18</span>
+<span class="linenos"> 19</span><span class="n">num_input</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="linenos"> 20</span>
+<span class="linenos"> 21</span><span class="n">num_I</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="linenos"> 22</span>
+<span class="linenos"> 23</span><span class="n">num_M</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="linenos"> 24</span>
+<span class="linenos"> 25</span><span class="n">num_N</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="linenos"> 26</span>
+<span class="linenos"> 27</span><span class="k">class</span><span class="w"> </span><span class="nc">WormNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="linenos"> 28</span>
+<span class="linenos"> 29</span>   <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 30</span>
+<span class="linenos"> 31</span>      <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>  <span class="c1"># 初始化父类</span>
+<span class="linenos"> 32</span>
+<span class="linenos"> 33</span>      <span class="c1"># 神经元</span>
+<span class="linenos"> 34</span>
+<span class="linenos"> 35</span>      <span class="bp">self</span><span class="o">.</span><span class="n">neuron_I</span> <span class="o">=</span> <span class="n">snn</span><span class="o">.</span><span class="n">Leaky</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="n">betaI</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>
+<span class="linenos"> 36</span>
+<span class="linenos"> 37</span>      <span class="bp">self</span><span class="o">.</span><span class="n">neuron_M</span> <span class="o">=</span> <span class="n">snn</span><span class="o">.</span><span class="n">Leaky</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="n">betaM</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>
+<span class="linenos"> 38</span>
+<span class="linenos"> 39</span>      <span class="bp">self</span><span class="o">.</span><span class="n">neuron_N</span> <span class="o">=</span> <span class="n">snn</span><span class="o">.</span><span class="n">Leaky</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="n">betaN</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>
+<span class="linenos"> 40</span>
+<span class="linenos"> 41</span>      <span class="c1"># 化学+电连接</span>
+<span class="linenos"> 42</span>
+<span class="linenos"> 43</span>      <span class="bp">self</span><span class="o">.</span><span class="n">input_to_I</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_input</span><span class="p">,</span> <span class="n">num_I</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># 输入到I</span>
+<span class="linenos"> 44</span>
+<span class="linenos"> 45</span>      <span class="bp">self</span><span class="o">.</span><span class="n">I_to_M</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_I</span><span class="p">,</span> <span class="n">num_M</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>           <span class="c1"># I到M</span>
+<span class="linenos"> 46</span>
+<span class="linenos"> 47</span>      <span class="bp">self</span><span class="o">.</span><span class="n">M_to_N</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">num_M</span><span class="p">,</span> <span class="n">num_N</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>           <span class="c1"># M到N</span>
+<span class="linenos"> 48</span>
+<span class="linenos"> 49</span>   <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spike_input</span><span class="p">):</span>  <span class="c1"># 前向推理</span>
+<span class="linenos"> 50</span>
+<span class="linenos"> 51</span>      <span class="n">time_steps</span> <span class="o">=</span> <span class="n">spike_input</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># 时间步长</span>
+<span class="linenos"> 52</span>
+<span class="linenos"> 53</span>      <span class="n">mem_I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neuron_I</span><span class="o">.</span><span class="n">init_leaky</span><span class="p">()</span>  <span class="c1"># I神经元膜电位</span>
+<span class="linenos"> 54</span>
+<span class="linenos"> 55</span>      <span class="n">mem_M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neuron_M</span><span class="o">.</span><span class="n">init_leaky</span><span class="p">()</span>  <span class="c1"># M神经元膜电位</span>
+<span class="linenos"> 56</span>
+<span class="linenos"> 57</span>      <span class="n">mem_N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neuron_N</span><span class="o">.</span><span class="n">init_leaky</span><span class="p">()</span>  <span class="c1"># N神经元膜电位</span>
+<span class="linenos"> 58</span>
+<span class="linenos"> 59</span>      <span class="n">spk_I_prev</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_I</span><span class="p">)</span>  <span class="c1"># I神经元上一个时间步的脉冲</span>
+<span class="linenos"> 60</span>
+<span class="linenos"> 61</span>      <span class="n">spk_M_prev</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_M</span><span class="p">)</span>  <span class="c1"># M神经元上一个时间步的脉冲</span>
+<span class="linenos"> 62</span>
+<span class="linenos"> 63</span>      <span class="n">spk_N_prev</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_N</span><span class="p">)</span>  <span class="c1"># N神经元上一个时间步的脉冲</span>
+<span class="linenos"> 64</span>
+<span class="linenos"> 65</span>      <span class="n">spk_I_rec</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># I神经元脉冲记录</span>
+<span class="linenos"> 66</span>
+<span class="linenos"> 67</span>      <span class="n">spk_M_rec</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># M神经元脉冲记录</span>
+<span class="linenos"> 68</span>
+<span class="linenos"> 69</span>      <span class="n">spk_N_rec</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># N神经元脉冲记录</span>
+<span class="linenos"> 70</span>
+<span class="linenos"> 71</span>      <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">time_steps</span><span class="p">):</span>  <span class="c1"># 按时间步推理</span>
+<span class="linenos"> 72</span>
+<span class="linenos"> 73</span>          <span class="c1"># I神经元的输入：来自外部输入</span>
+<span class="linenos"> 74</span>
+<span class="linenos"> 75</span>          <span class="n">input_I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_to_I</span><span class="p">(</span><span class="n">spike_input</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+<span class="linenos"> 76</span>
+<span class="linenos"> 77</span>          <span class="n">spk_I</span><span class="p">,</span> <span class="n">mem_I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neuron_I</span><span class="p">(</span><span class="n">input_I</span><span class="p">,</span> <span class="n">mem_I</span><span class="p">)</span>
+<span class="linenos"> 78</span>
+<span class="linenos"> 79</span>          <span class="c1"># M神经元的输入：来自上一个时间步的I神经元</span>
+<span class="linenos"> 80</span>
+<span class="linenos"> 81</span>          <span class="n">input_M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_to_M</span><span class="p">(</span><span class="n">spk_I_prev</span><span class="p">)</span>
+<span class="linenos"> 82</span>
+<span class="linenos"> 83</span>          <span class="n">spk_M</span><span class="p">,</span> <span class="n">mem_M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neuron_M</span><span class="p">(</span><span class="n">input_M</span><span class="p">,</span> <span class="n">mem_M</span><span class="p">)</span>
+<span class="linenos"> 84</span>
+<span class="linenos"> 85</span>          <span class="c1"># N神经元的输入：来自上一个时间步的M神经元</span>
+<span class="linenos"> 86</span>
+<span class="linenos"> 87</span>          <span class="n">input_N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">M_to_N</span><span class="p">(</span><span class="n">spk_M_prev</span><span class="p">)</span>
+<span class="linenos"> 88</span>
+<span class="linenos"> 89</span>          <span class="n">spk_N</span><span class="p">,</span> <span class="n">mem_N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">neuron_N</span><span class="p">(</span><span class="n">input_N</span><span class="p">,</span> <span class="n">mem_N</span><span class="p">)</span>
+<span class="linenos"> 90</span>
+<span class="linenos"> 91</span>          <span class="c1"># 记录脉冲</span>
+<span class="linenos"> 92</span>
+<span class="linenos"> 93</span>          <span class="n">spk_I_rec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spk_I</span><span class="p">)</span>
+<span class="linenos"> 94</span>
+<span class="linenos"> 95</span>          <span class="n">spk_M_rec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spk_M</span><span class="p">)</span>
+<span class="linenos"> 96</span>
+<span class="linenos"> 97</span>          <span class="n">spk_N_rec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spk_N</span><span class="p">)</span>
+<span class="linenos"> 98</span>
+<span class="linenos"> 99</span>          <span class="c1"># 更新上一个时间步的脉冲</span>
+<span class="linenos">100</span>
+<span class="linenos">101</span>          <span class="n">spk_I_prev</span> <span class="o">=</span> <span class="n">spk_I</span>
+<span class="linenos">102</span>
+<span class="linenos">103</span>          <span class="n">spk_M_prev</span> <span class="o">=</span> <span class="n">spk_M</span>
+<span class="linenos">104</span>
+<span class="linenos">105</span>          <span class="n">spk_N_prev</span> <span class="o">=</span> <span class="n">spk_N</span>
+<span class="linenos">106</span>
+<span class="linenos">107</span>      <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">spk_I_rec</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">spk_M_rec</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">spk_N_rec</span><span class="p">)</span>
+<span class="linenos">108</span>
+<span class="linenos">109</span><span class="n">connections</span> <span class="o">=</span> <span class="err">“</span><span class="o">/</span><span class="n">your</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">connection</span><span class="o">.</span><span class="n">pkl</span><span class="err">”</span>
+<span class="linenos">110</span>
+<span class="linenos">111</span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/your/path/to/input.txt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+<span class="linenos">112</span>
+<span class="linenos">113</span>     <span class="n">inputdata</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+<span class="linenos">114</span>
+<span class="linenos">115</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="linenos">116</span>
+<span class="linenos">117</span>     <span class="n">data</span> <span class="o">=</span> <span class="n">functional</span><span class="o">.</span><span class="n">framework</span><span class="p">(</span><span class="n">net</span><span class="p">,</span><span class="n">connections</span><span class="p">,</span><span class="n">inputdata</span><span class="p">)</span>
+<span class="linenos">118</span>
+<span class="linenos">119</span>     <span class="n">net_output</span> <span class="o">=</span> <span class="n">functional</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="linenos">120</span>
+<span class="linenos">121</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">122</span>
+<span class="linenos">123</span>     <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
 </section>
 <section id="id3">
-<h2>运行结果<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<h2>运行结果<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <p>TODO: 添加运行结果</p>
 </section>
 </section>

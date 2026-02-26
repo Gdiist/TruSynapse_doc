@@ -1,0 +1,535 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SNN网络处理流程示例 &mdash; TruSynapse 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script>let toggleHintShow = 'Click to show';</script>
+      <script>let toggleHintHide = 'Click to hide';</script>
+      <script>let toggleOpenOnPrint = 'true';</script>
+      <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+      <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="基础模型" href="../models/index.html" />
+    <link rel="prev" title="从头搭建神经网络" href="run_a_net.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            TruSynapse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">目录:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">介绍</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../introduction/tru_synapse_framework.html">TruSynapse 框架</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id1">琴枢微处理器简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id2">软件架构与层次视图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../introduction/tru_synapse_framework.html#id3">TruSynapse 框架定位与目标</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction/foundational_concepts/index.html">基础概念</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../introduction/foundational_concepts/data_organization_and_compression.html">神经网络数据组织与压缩</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/data_organization_and_compression.html#id2">数据类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/data_organization_and_compression.html#id3">存储与压缩</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/data_organization_and_compression.html#trusynapse">传统表示与 TruSynapse 方案</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html">子网执行体</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id2">子网执行体概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id3">子网执行体结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#snndata">子网执行体数据结构SNNData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../introduction/foundational_concepts/subnet_executor.html#id4">神经网络文件格式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">快速开始</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="installation.html">安装指南</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#id2">系统要求</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#id3">安装步骤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#id4">大页内存配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#id5">执行体驱动</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data_preparation.html">数据准备</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#id2">神经网络定义</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#id3">权重文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data_preparation.html#id4">输入数据</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="run_a_net.html">从头搭建神经网络</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id2">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#net">构建神经网络（net）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#connections">转换连接关系数据（connections）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#inputdata">准备输入脉冲（inputdata）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#nfu">构造 NFU 子网执行体</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id3">执行 NFU 子网并获取输出</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id4">处理输出结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="run_a_net.html#id5">导入已训练神经网络</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id6">概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id7">步骤</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="run_a_net.html#id8">搭建混合神经网络</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="run_a_net.html#id9">应用场景示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SNN网络处理流程示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">1 SNN网络约束规范</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">1.1 网络实例化方式约束</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bias">1.2 偏置（Bias）配置约束</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">1.3 神经元层类型约束</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">1.4 输入数据规范</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">1.4.1 输入值类型约束</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">1.4.2 输入脉冲文件存储格式约束</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">2 调用流程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">2.1 定义 SNN 网络结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">2.2 数据提取与转换</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id10">2.2.1 调用框架函数提取并处理网络数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">2.2.2 参数加载与数据转换</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">2.3 SNN计算执行</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">3 数据文件说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">4 输出说明</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models/index.html">基础模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/mlp.html">多层感知机 (MLP)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models/mlp.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/mlp.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/mlp.html#id3">运行结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models/cnn.html">卷积神经网络 (CNN)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models/cnn.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/cnn.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/cnn.html#id3">运行结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models/resnet.html">残差网络 (ResNet)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models/resnet.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/resnet.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/resnet.html#id3">运行结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models/lnn.html">液态神经网络（LNN）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models/lnn.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/lnn.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/lnn.html#id3">运行结果</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models/transformer.html">Transformer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models/transformer.html#id1">模型概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/transformer.html#id2">实现代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/transformer.html#id3">运行结果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../applications/index.html">应用案例</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../applications/image_classification.html">图像分类</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id2">应用概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#mnist-mlp">实现方案一 ：mnist-MLP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#mnist-sparse">实现方案二 ：mnist-sparse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#mnist-conv">实现方案三 ：mnist-conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#cifar10-conv">实现方案四 ：cifar10-conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/image_classification.html#id3">性能评估</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../applications/speech_recognition.html">语音识别</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id2">应用概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#gsc-mlp">实现方案一 ：gsc-MLP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/speech_recognition.html#id3">性能评估</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../applications/autonomous_driving.html">自动驾驶</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../applications/autonomous_driving.html#id2">应用概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/autonomous_driving.html#id3">实现方案</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/autonomous_driving.html#id4">性能评估</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../applications/brain_simulation.html">脑仿真</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../applications/brain_simulation.html#id2">应用概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/brain_simulation.html#id3">实现方案</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../applications/brain_simulation.html#id4">性能评估</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../higher_level_use/index.html">高级使用</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../higher_level_use/neuron_model.html">神经元模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../higher_level_use/neuron_model.html#id2">7.1 汇编代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../higher_level_use/neuron_model.html#id3">7.2 事件语言</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api_documentation/index.html">API 文档</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api_documentation/index.html#id1">核心 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_documentation/index.html#id2">工具函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_documentation/index.html#id3">配置选项</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TruSynapse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">快速开始</a></li>
+      <li class="breadcrumb-item active">SNN网络处理流程示例</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting_started/transform_to_snndata.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="snn">
+<h1>SNN网络处理流程示例<a class="headerlink" href="#snn" title="Link to this heading"></a></h1>
+<p>本示例展示了如何使用Python通过调库完成神经网络提取、计算、结果处理的完整流程。</p>
+</section>
+<section id="id1">
+<h1>1 SNN网络约束规范<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SNN_Gesture_Model</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_inputs</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">,</span> <span class="n">n_hidden2</span><span class="p">,</span> <span class="n">n_outputs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># 第一层：全连接 + LIF</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_inputs</span><span class="p">,</span> <span class="n">n_hidden1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lif1</span> <span class="o">=</span> <span class="n">snn</span><span class="o">.</span><span class="n">Leaky</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="n">BETA_HIDDEN</span><span class="p">,</span> <span class="n">spike_grad</span><span class="o">=</span><span class="n">SPIKE_GRAD</span><span class="p">,</span> <span class="n">learn_threshold</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># 第二层：全连接 + LIF</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden1</span><span class="p">,</span> <span class="n">n_hidden2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lif2</span> <span class="o">=</span> <span class="n">snn</span><span class="o">.</span><span class="n">Leaky</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="n">BETA_HIDDEN</span><span class="p">,</span> <span class="n">spike_grad</span><span class="o">=</span><span class="n">SPIKE_GRAD</span><span class="p">,</span> <span class="n">learn_threshold</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># 输出层：全连接 + LIF（无重置机制），输出层不重置，累加膜电位</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden2</span><span class="p">,</span> <span class="n">n_outputs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lif3</span> <span class="o">=</span> <span class="n">snn</span><span class="o">.</span><span class="n">Leaky</span><span class="p">(</span><span class="n">beta</span><span class="o">=</span><span class="n">BETA_OUTPUT</span><span class="p">,</span> <span class="n">spike_grad</span><span class="o">=</span><span class="n">SPIKE_GRAD</span><span class="p">,</span> <span class="n">learn_threshold</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">reset_mechanism</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="c1"># 初始化LIF神经元的膜电位</span>
+        <span class="n">mem1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lif1</span><span class="o">.</span><span class="n">init_leaky</span><span class="p">()</span>
+        <span class="n">mem2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lif2</span><span class="o">.</span><span class="n">init_leaky</span><span class="p">()</span>
+        <span class="n">mem3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lif3</span><span class="o">.</span><span class="n">init_leaky</span><span class="p">()</span>
+        <span class="n">mem3_rec</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># 用于累加输出层膜电位</span>
+
+        <span class="c1"># 对每个时间步进行处理</span>
+        <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
+            <span class="c1"># 第一层：全连接 + LIF</span>
+            <span class="n">cur1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">step</span><span class="p">])</span>  <span class="c1"># [batch_size, n_hidden1]</span>
+            <span class="n">spk1</span><span class="p">,</span> <span class="n">mem1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lif1</span><span class="p">(</span><span class="n">cur1</span><span class="p">,</span> <span class="n">mem1</span><span class="p">)</span>  <span class="c1"># 输出脉冲和更新后的膜电位</span>
+            <span class="c1"># 第二层：全连接 + LIF</span>
+            <span class="n">cur2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">spk1</span><span class="p">)</span>  <span class="c1"># [batch_size, n_hidden2]</span>
+            <span class="n">spk2</span><span class="p">,</span> <span class="n">mem2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lif2</span><span class="p">(</span><span class="n">cur2</span><span class="p">,</span> <span class="n">mem2</span><span class="p">)</span>
+            <span class="c1"># 输出层：全连接 + LIF（累加膜电位）</span>
+            <span class="n">cur3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">spk2</span><span class="p">)</span>  <span class="c1"># [batch_size, n_outputs]</span>
+            <span class="n">spk3</span><span class="p">,</span> <span class="n">mem3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lif3</span><span class="p">(</span><span class="n">cur3</span><span class="p">,</span> <span class="n">mem3</span><span class="p">)</span>
+            <span class="c1"># 累加输出层膜电位</span>
+            <span class="n">mem3_rec</span> <span class="o">+=</span> <span class="n">mem3</span>
+
+        <span class="k">return</span> <span class="n">mem3_rec</span>
+</pre></div>
+</div>
+<section id="id2">
+<h2>1.1 网络实例化方式约束<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>网络结构仅支持通过顺序式手动声明的方式创建（即逐行显式定义各层结构，并按前向传播顺序完成网络拼接）；暂不支持基于 <code class="docutils literal notranslate"><span class="pre">nn.ModuleList</span></code> （或同类模块化列表容器）的动态组网方式。</p>
+</section>
+<section id="bias">
+<h2>1.2 偏置（Bias）配置约束<a class="headerlink" href="#bias" title="Link to this heading"></a></h2>
+<p>该 SNN 框架对神经元层偏置参数的支持范围严格限定为以下两类场景：</p>
+<ul class="simple">
+<li><p>无偏置模式：网络内所有神经元层均不配置偏置参数；</p></li>
+<li><p>层级统一偏置模式：若某神经元层启用偏置，则该层内所有神经元共享同一标量偏置值（即偏置参数维度为标量，而非与神经元数量匹配的向量）；</p></li>
+</ul>
+<p>暂不支持 “每层神经元独立配置不同偏置值” 的场景。</p>
+</section>
+<section id="id3">
+<h2>1.3 神经元层类型约束<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>网络中仅允许集成以下两类神经元层，不支持其他层类型：</p>
+<ul class="simple">
+<li><p><strong>线性层（Linear Layer）</strong>：全连接类型的神经元层，需与神经元计算逻辑强关联，暂不支持无神经元关联的纯线性变换层（如动作头、价值头等，二者仅承担数值映射功能，无 SNN 神经元核心计算逻辑）；</p></li>
+<li><p><strong>卷积层（Convolutional Layer）</strong>：包含 1D/2D/3D 卷积层（根据框架适配范围）；</p></li>
+</ul>
+<p>暂不支持池化层、激活层、循环层、归一化层等其他类型的神经元层。</p>
+</section>
+<section id="id4">
+<h2>1.4 输入数据规范<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3>1.4.1 输入值类型约束<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>输入脉冲信号仅支持二值离散型数据，取值范围严格限定为 {0, 1}；不支持连续数值型输入（如浮点型、整型非 0/1 值、复数型等）。</p>
+</section>
+<section id="id6">
+<h3>1.4.2 输入脉冲文件存储格式约束<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>输入脉冲信号需存储为纯文本文件（<code class="docutils literal notranslate"><span class="pre">.txt</span></code> 格式），且需满足以下格式要求：</p>
+<ul class="simple">
+<li><p>每行仅包含一个脉冲信号值（0 或 1），无任何标点符号、分隔符、空白字符；</p></li>
+<li><p>文件首部、尾部均无空行，行内无前置 / 后置空格、制表符等无效字符；</p></li>
+<li><p>文本编码采用 UTF-8，避免特殊字符导致解析异常。</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="id7">
+<h1>2 调用流程<a class="headerlink" href="#id7" title="Link to this heading"></a></h1>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/workflow.png"><img alt="SNN执行流程示意图" src="../_images/workflow.png" style="width: 80%;" />
+</a>
+</figure>
+<section id="id8">
+<h2>2.1 定义 SNN 网络结构<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>配置参数：根据用户的网络结构，完成对应配置参数的定义与赋值；</p></li>
+<li><p>实例化网络：基于已完成配置的网络参数，完成 SNN 网络对象的实例化构建。</p></li>
+</ul>
+</section>
+<section id="id9">
+<h2>2.2 数据提取与转换<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<section id="id10">
+<h3>2.2.1 调用框架函数提取并处理网络数据<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">framwork</span><span class="p">(</span> <span class="n">net</span><span class="p">,</span>
+          <span class="n">connection_path</span><span class="o">=</span><span class="s2">&quot;./snn_data/snn_policy.pth&quot;</span><span class="p">,</span>
+          <span class="n">inputdata_path</span><span class="o">=</span><span class="s2">&quot;./snn_data/inputspike.txt&quot;</span><span class="p">,</span>
+          <span class="n">output_file_path</span><span class="o">=</span><span class="s2">&quot;./snn_data/navigation.hdf5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">net</span></code> : 输入，为已完成实例化的 SNN 网络对象。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">snn_policy.pth</span></code> : 输入，存储 SNN 网络结构信息（含 <code class="docutils literal notranslate"><span class="pre">.weight</span></code> 类权重数据）的文件，支持 pkl、pth 格式；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inputspike.txt</span></code> : 输入，为SNN网络的输入脉冲文件，每行代表一个脉冲事件；</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">navigation.hdf5</span></code> : 输出，存储 NFU所需数据的文件（包含子网参数、结构信息等），供后续 C 库解析，默认采用 hdf5 格式存储。</p></li>
+</ul>
+<p>调用执行 <code class="docutils literal notranslate"><span class="pre">framwork(...)</span></code>，该函数会从已定义的 SNN 网络中提取权重、阈值、连接关系等参数，处理后生成NFU所需的数据，并保存在hdf5文件中。</p>
+</section>
+<section id="id11">
+<h3>2.2.2 参数加载与数据转换<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">convert</span> <span class="o">=</span> <span class="n">paras_process</span><span class="p">()</span>
+<span class="n">snn_data</span> <span class="o">=</span> <span class="n">convert</span><span class="o">.</span><span class="n">parse_collect_to_struct</span><span class="p">(</span>
+                            <span class="n">spikes_in_path</span><span class="o">=</span><span class="s2">&quot;./snn_data/inputspike.txt&quot;</span><span class="p">,</span>
+                            <span class="n">neurondata_in_path</span><span class="o">=</span><span class="s2">&quot;./snn_data/neuron.data&quot;</span><span class="p">,</span>
+                            <span class="n">subnetsandparas_in_path</span> <span class="o">=</span> <span class="s2">&quot;./snn_data/navigation.hdf5&quot;</span><span class="p">,</span>
+                            <span class="n">subnet_num</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">subnet_paras_name</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">paras_process()</span></code>: 创建参数处理类实例</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parse_collect_to_struct()</span></code>: 从文件中加载SNN数据并转换成C结构体：
+- <code class="docutils literal notranslate"><span class="pre">spikes_in_path</span></code>: 输入，为SNN网络的输入脉冲文件，每行代表一个脉冲事件
+- <code class="docutils literal notranslate"><span class="pre">neurondata_in_path</span></code>: 输入，为存储神经元模型数据的文件
+- <code class="docutils literal notranslate"><span class="pre">subnetsandparas_in_path</span></code>: 输入，存储 NFU所需数据的文件
+- <code class="docutils literal notranslate"><span class="pre">subnet_num</span></code>: 需要调用的子网编号（-1表示所有子网）
+- <code class="docutils literal notranslate"><span class="pre">subnet_paras_name</span></code>: 子网内需要调用的参数名称（默认全部）</p></li>
+</ul>
+<p>调用 <code class="docutils literal notranslate"><span class="pre">paras_process().parse_collect_to_struct()</span></code>，读取上述文件，将其转换为 <code class="docutils literal notranslate"><span class="pre">snn_data</span></code> 结构体（C 兼容的内存布局），该结构体将直接传递给 SNN 驱动执行计算。</p>
+</section>
+</section>
+<section id="id12">
+<h2>2.3 SNN计算执行<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">driver</span> <span class="o">=</span> <span class="n">SNNDriver</span><span class="p">(</span><span class="n">lib_path</span><span class="o">=</span><span class="s1">&#39;./libsnndriver.so&#39;</span><span class="p">)</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">snn_data</span><span class="p">))</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SNNDriver()</span></code>: 初始化SNN驱动，加载C语言动态链接库（<code class="docutils literal notranslate"><span class="pre">libsnndriver.so</span></code>）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">execute()</span></code>: 执行SNN计算，传入数据结构指针</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">snn_data</span></code>: 转换后的结构体参数</p></li>
+<li><p>结果输出：nfu计算返回的原始结果保存在 <code class="docutils literal notranslate"><span class="pre">snndata.outputdata</span></code> 数组里</p></li>
+</ul>
+</section>
+</section>
+<section id="id13">
+<h1>3 数据文件说明<a class="headerlink" href="#id13" title="Link to this heading"></a></h1>
+<table class="docutils align-default" id="id15">
+<caption><span class="caption-text">SNN数据文件说明</span><a class="headerlink" href="#id15" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>文件路径</p></th>
+<th class="head"><p>类型</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>./snn_data/policy.pth</p></td>
+<td><p>torch文件 (也支持.pkl)</p></td>
+<td><p>用户的SNN网络结构参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>./snn_data/inputspike.txt</p></td>
+<td><p>文本文件</p></td>
+<td><p>输入脉冲数据</p></td>
+</tr>
+<tr class="row-even"><td><p>./snn_data/neuron.data</p></td>
+<td><p>数据文件</p></td>
+<td><p>神经元模型参数数据</p></td>
+</tr>
+<tr class="row-odd"><td><p>./snn_data/navigation.hdf5</p></td>
+<td><p>HDF5文件</p></td>
+<td><p>处理后的SNN网络结构参数</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id14">
+<h1>4 输出说明<a class="headerlink" href="#id14" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><strong>输出格式</strong>: 32位无符号整数列表</p></li>
+<li><p><strong>控制台显示示例</strong>:</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[警告] 目前仅支持一次性计算一个子网! 若文件内有多个子网，选择导出全部子网, 则会默认导出第一个子网!
+[提示] 该hdf5文件里根目录下Group数量: 4
+[提示] hdf5读取成功, 从 ./snn_data/1_0.hdf5 加载 1 个子网的变量
+执行SNN计算...
+=== SNN硬件初始化 ===
+已打开驱动设备: /dev/accelerator
+✅ Hugepage file opened
+Hugepage file size: 1073741824 bytes
+Mapping 1GB hugepage...
+✅ Successfully mapped 1GB HugePage at virtual: 0xffff40000000
+First-touch读取数据: 0x3f00000000000000
+硬件初始化完成
+connection数据写入完成
+inputneuronlist数据写入完成
+inputspike数据写入完成
+neuronbase数据写入完成
+neuron数据写入完成
+开始配置寄存器...
+物理地址: 0x0000000c00000000
+物理地址: 0xc00000000
+开始执行SNN计算...
+SNN计算完成
+开始探测输出结果长度...
+输出基地址: 0x200100
+探测到输出结果数量: 10
+复制数据中...
+成功读取 10 个输出结果
+复制后的前10个输出结果: 1 655369 917514 917513 786442 786441 786440 1179658 1179657 1179656
+清理硬件资源...
+硬件资源清理完成
+处理输出结果...
+   输出脉冲: 15 个
+   全部输出: [1, 655369, 917514, 917513, 786442, 786441, 786440, 1179658, 1179657, 1179656, 13246849, 13246848, 13377926, 13377921, 13377920]
+   输出内存已释放
+=== SNN测试完成 ===
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>输出脉冲说明</strong>:</p>
+<ul>
+<li><p>注意: 输出脉冲列表中的首个“1”表示存在输出，此为标志位，并非实际的输出脉冲，实际输出脉冲应从列表第二个元素开始计算</p></li>
+<li><p>输出脉冲的格式: 一个输出脉冲数据共32位，其中0~13为物理神经元号，14~17为GNC号，17~31为时间步数</p></li>
+<li><p>输出结果转换参考代码</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">fun1</span><span class="p">(</span><span class="n">lista</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span><span class="sa">f</span><span class="s2">&quot;开始统计:&quot;</span><span class="p">,</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">lista</span><span class="p">:</span>
+        <span class="n">physical_num</span> <span class="o">=</span> <span class="p">(</span><span class="n">num</span> <span class="o">&amp;</span> <span class="mh">0x1fff</span><span class="p">)</span>
+        <span class="n">GNC_num</span> <span class="o">=</span> <span class="p">(</span><span class="n">num</span> <span class="o">&gt;&gt;</span> <span class="mi">13</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xf</span>
+        <span class="n">time_step</span> <span class="o">=</span> <span class="p">(</span><span class="n">num</span> <span class="o">&gt;&gt;</span> <span class="mi">17</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">lista</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="ow">and</span><span class="p">(</span><span class="n">physical_num</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="ow">and</span><span class="p">(</span><span class="n">GNC_num</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="ow">and</span><span class="p">(</span><span class="n">time_step</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;有输出！&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time_step</span><span class="p">,</span><span class="w"> </span><span class="n">GNC_num</span><span class="p">,</span><span class="n">physical_num</span><span class="si">}</span><span class="s2">, 在第</span><span class="si">{</span><span class="n">time_step</span><span class="si">}</span><span class="s2">时间步，</span><span class="si">{</span><span class="n">GNC_num</span><span class="si">}</span><span class="s2">号GNC的</span><span class="si">{</span><span class="n">physical_num</span><span class="si">}</span><span class="s2">号神经元发放了一次&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span><span class="sa">f</span><span class="s2">&quot;总共有</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">lista</span><span class="p">)</span><span class="si">}</span><span class="s2">个输出&quot;</span><span class="p">,</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">524298</span><span class="p">,</span> <span class="mi">524297</span><span class="p">,</span> <span class="mi">524296</span><span class="p">,</span> <span class="mi">786442</span><span class="p">,</span> <span class="mi">786441</span><span class="p">,</span> <span class="mi">786440</span><span class="p">,</span> <span class="mi">1179658</span><span class="p">,</span> <span class="mi">1179657</span><span class="p">,</span> <span class="mi">1179656</span><span class="p">]</span>
+    <span class="n">fun1</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="run_a_net.html" class="btn btn-neutral float-left" title="从头搭建神经网络" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../models/index.html" class="btn btn-neutral float-right" title="基础模型" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Gdiist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
