@@ -13,7 +13,7 @@ Google语音命令数据集（V2）是评估关键词检测算法性能的常用
 - `gsc-MLP`：面向 Speech Commands 的全连接脉冲网络。
 
 实现方案 ：gsc-MLP
---------
+-----------------
 - `gsc-MLP` 网络结构（SNN）
 - 输入为预处理后的语音特征向量（示例配置：`input_neuron_num=4000`）
 
