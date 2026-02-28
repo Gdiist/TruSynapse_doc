@@ -12,7 +12,7 @@ Google语音命令数据集（V2）是评估关键词检测算法性能的常用
 
 - `gsc-MLP`：面向 Speech Commands 的全连接脉冲网络。
 
-实现方案一 ：gsc-MLP
+实现方案 ：gsc-MLP
 --------
 - `gsc-MLP` 网络结构（SNN）
 - 输入为预处理后的语音特征向量（示例配置：`input_neuron_num=4000`）
@@ -51,32 +51,22 @@ Google语音命令数据集（V2）是评估关键词检测算法性能的常用
             spk3, mem3 = self.lif3(self.fc3(spk2), mem3)
             return spk3, mem3
 
-性能评估
+推理结果
 --------
 
-
-.. list-table:: SNN 精度与推理时间对比（CPU 2.5GHz vs TruSynapse）
+.. list-table:: SNN 推理时间（TruSynapse）
    :header-rows: 1
-   :widths: 14 12 14 12 16 14 14
+   :widths: 14 12 14 12 16 14
 
    * - 任务
      - 模型类型
      - input_size
      - 数据量
      - 推理设备
-     - 准确率
      - 推理时间
    * - speech_commands / gsc-MLP
      - SNN
      - 4000
-     - 待补充
-     - CPU 2.5GHz
-     - 待补充
-     - 待补充
-   * - speech_commands / gsc-MLP
-     - SNN
-     - 4000
-     - 待补充
-     - TruSynapse 1.5GHz
-     - 待补充
+     - 1 批
+     - TruSynapse
      - 待补充
