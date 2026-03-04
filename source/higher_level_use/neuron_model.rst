@@ -5,13 +5,263 @@
 ------------
 本节指出神经元模型在底层由 BCE 扩展指令集实现。详细指令请参见《BCE 体系结构之指令集》。
 
-7.2 事件语言
-------------
-事件语言用于描述神经元模型的事件驱动处理逻辑。下列示例给出一个典型的 LIF（leaky integrate-and-fire）神经元模型及其事件处理流程，并在注释中说明了关键语义。
+7.2 事件驱动高级语言（EDL）
+--------------------------
+
+事件驱动高级语言（Event-Driven Language, EDL）是专为描述神经元模型的事件驱动处理逻辑而设计的高级编程语言。本节详细介绍EDL的语法规范和使用方法。
+
+7.2.1 语言总体结构
+^^^^^^^^^^^^^^^^^^
+
+``start`` 用于标记程序开始。
+
+``end`` 用于标记程序结束。
+
+基本结构：
+
+.. code-block:: text
+
+    start
+
+    定义神经元
+    声明事件类型
+    初始化变量
+
+    定义事件处理
+    定义事件调度逻辑
+    
+    end
+
+7.2.2 数据类型
+^^^^^^^^^^^^^^
+
+支持如下类型：
+
+- ``int``    16-bit 整数
+- ``float``  16-bit 浮点
+- ``bool``   1-bit 布尔
+- ``neuron`` 神经元复合类型
+
+变量命名规则：
+
+- 以字母或下划线开头
+- 由字母、数字、下划线组成
+
+**基本类型示例：**
+
+.. code-block:: text
+
+    int ID
+    int num
+    float weight
+    float threshold
+    bool fired
+    bool is_reset
+
+类型运算规则：
+
+- int 与 float 运算结果默认 float
+- 若赋值给 int，则自动截断为 int
+- bool 不参与数值类型转换
+- 不处理溢出
+
+7.2.3 neuron 复合类型
+^^^^^^^^^^^^^^^^^^^^^
+
+支持分层存储映射：
+
+- ``@fast``   高频访问，小容量
+- ``@share``  共享参数，中容量
+- ``@slow``   低频访问，大容量
+
+定义格式：
+
+.. code-block:: text
+
+    neuron lif:
+        @fast
+            float v = 0.0
+
+        @share
+            float threshold = 1.0
+
+        @slow
+            float reset = 0.0
+
+成员访问：
+
+.. code-block:: text
+
+    lif.v = 0.1
+
+7.2.4 事件机制
+^^^^^^^^^^^^^^
+
+**事件声明：**
+
+格式：
+
+.. code-block:: text
+
+    set 事件名 事件ID
+
+ID 编码规则：
+
+- 00 : spike
+- 01 : timestep
+- 10 : custom
+- 11 : timestep_global
 
 示例：
 
-.. code-block::
+.. code-block:: text
+
+    set event_spike 00
+    set event_timestep 01
+
+**事件跳转：**
+
+.. code-block:: text
+
+    goto event_spike
+
+**emit_spike：**
+
+用于产生脉冲事件：
+
+.. code-block:: text
+
+    if lif.v > lif.threshold:
+        emit_spike
+        lif.v = lif.reset
+
+**wait_event：**
+
+- 若无事件 → halt
+- 若有事件 → 跳转至主循环判断
+
+**事件定义：**
+
+事件定义必须在声明之后。使用 ``end_event`` 结束事件块。
+
+.. code-block:: text
+
+    event_timestep:
+        lif.v = potential + weight
+        if lif.v > lif.threshold:
+            lif.v = lif.reset
+    end_event
+
+7.2.5 控制流
+^^^^^^^^^^^^
+
+支持条件语句：
+
+.. code-block:: text
+
+    if 条件:
+    elif 条件:
+    else:
+
+7.2.6 字面量
+^^^^^^^^^^^^
+
+支持：
+
+- 二进制：``0b1010``
+- 十进制：``42``、``3.14``、``-1``
+- 布尔：``true``、``false``
+
+示例：
+
+.. code-block:: text
+
+    float num = -0.2
+    int binaryNum = 0b1011
+    bool fired = false
+
+7.2.7 内置变量
+^^^^^^^^^^^^^^
+
+只读变量：
+
+- ``potential``    当前膜电位
+- ``weight``       当前连接权重
+- ``event_type``   当前事件类型
+
+示例：
+
+.. code-block:: text
+
+    float v = potential + weight
+
+    if event_type == event_spike:
+        goto event_spike
+
+7.2.8 运算符
+^^^^^^^^^^^^
+
+算术运算符：
+
+.. code-block:: text
+
+    + - * / += -= *= /= & ^ ++ -- ! % >> <<
+
+比较运算符：
+
+.. code-block:: text
+
+    > < >= <= == !=
+
+7.2.9 注释
+^^^^^^^^^^
+
+.. code-block:: text
+
+    # 单行注释
+    ## 多行注释 ##
+
+7.2.10 完整示例
+^^^^^^^^^^^^^^^
+
+下列示例给出一个典型的 LIF（leaky integrate-and-fire）神经元模型及其事件处理流程，并在注释中说明了关键语义。
+
+**基础示例：**
+
+.. code-block:: text
+
+    start
+
+    neuron lif:
+        @fast
+            float v = 0.0
+
+        @share
+            float threshold = 1.0
+            float reset = 0.0
+
+        @slow
+            bool spike = false
+
+    set event_spike 00
+    set event_timestep 01
+
+    wait_event
+
+    main:
+        if event_type == event_spike:
+            goto event_spike
+
+    event_spike:
+        lif.v = potential + weight
+
+    end_event
+
+    end
+
+**详细示例：**
+
+.. code-block:: text
 
     start
     # 全局变量声明
