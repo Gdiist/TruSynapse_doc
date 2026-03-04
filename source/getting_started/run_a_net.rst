@@ -3,7 +3,7 @@
 ==============
 这里将介绍三种常见的使用场景
 
-从头搭建神经网络
+一、从头搭建神经网络
 =================
 
 概述
@@ -12,7 +12,7 @@
 本示例展示如何使用 TruSynapse 框架将一个三层前向传播全连接神经网络映射到 NFU 并启动计算。
 文档按流程分为网络构建、连接转换、输入准备、构造子网执行体与执行五个部分。
 
-构建神经网络（net）
+1. 构建神经网络（net）
 ----------------------
 描述网络结构（层次、每层神经元数、必要的神经元/层参数等），并将网络信息保存为变量（例如 `net`），供后续映射使用。
 
@@ -48,7 +48,7 @@
     net = SNNMLP()
 
 
-转换连接关系数据（connections）
+2. 转换连接关系数据（connections）
 ----------------------------------
 使用辅助函数将二维连接矩阵/张量转换为框架需要的三元组格式（src_id, dst_id, weight）。
 
@@ -96,7 +96,7 @@
     connections = connection_input + connection_hidden1 + connection_output
 
 
-准备输入脉冲（inputdata）
+3. 准备输入脉冲（inputdata）
 -----------------------------
 输入应为一维列表，元素为 0 或 1，长度等于输入层神经元数。
 
@@ -128,7 +128,7 @@
     inputdata = convert_mnist_to_spike()  
 
 
-构造 NFU 子网执行体
+4. 构造 NFU 子网执行体
 -----------------------
 使用框架接口将网络、连接和输入组合成可执行的数据结构（示例接口名使用 `functional.framework`）。
 
@@ -142,7 +142,7 @@
     data = functional.framework(net, connections, inputdata) 
 
 
-执行 NFU 子网并获取输出
+5. 执行 NFU 子网并获取输出
 ---------------------------
 调用运行接口执行 NFU 子网，并读取返回结果。
 
@@ -153,7 +153,7 @@
 
     net_output = functional.run(data) 
 
-处理输出结果
+6. 处理输出结果
 ----------------
 NFU的输出结果保存在输出spike空间，用户可以直接读取该空间的数据，也可以使用框架的工具进行转换
 
@@ -194,7 +194,7 @@ timestep4时：神经元1、2、4均发放脉冲
 该输出会保存为outputdata供用户调用，用户可根据网络用途对NFU的输出进行处理。
 
 
-直接导入已有网络
+二、直接导入已有网络
 ================
 概述
 ----
@@ -242,19 +242,20 @@ timestep4时：神经元1、2、4均发放脉冲
         print("1. 生成并保存HDF5文件...")
         # 实例化网络
         SNN_net = MnistSNN()
-    # 如果想要存入hdf5的参数，可用变量获取net_process的返回值，如 paras = net_process(...)
-    # 这里hdf5文件名经过路径校验后，会从1.hdf5变为1_0.hdf5
-    net_process(SNN_net,connection_path="./snn_data/connections.pkl",inputdata_path="./snn_data/inputspike.txt",output_file_path="./snn_data/1.hdf5")
+        # 如果想要存入hdf5的参数，可用变量获取net_process的返回值，如 paras = net_process(...)
+        # 这里hdf5文件名经过路径校验后，会从1.hdf5变为1_0.hdf5
+        net_process(SNN_net,connection_path="./snn_data/connections.pkl",inputdata_path="./snn_data/inputspike.txt",output_file_path="./snn_data/1.hdf5")
         
         # 解析并转换参数
         print("2. 从HDF5文件中解析参数...")
         # 从HDF5文件中解析参数并构建SNNData结构体
         hdf5paras_convert = paras_process()
-        snn_data = hdf5paras_convert.parse_collect_to_struct(spikes_in_path="./snn_data/inputspike.txt",
-    											neurondata_in_path="./snn_data/neuron.data",
-    											subnetsandparas_in_path = "./snn_data/1_0.hdf5",
-    											subnet_num = 1,
-    											subnet_paras_name = "all")
+        snn_data = hdf5paras_convert.parse_collect_to_struct(
+                    spikes_in_path="./snn_data/inputspike.txt",
+    				neurondata_in_path="./snn_data/neuron.data",
+    				subnetsandparas_in_path = "./snn_data/1_0.hdf5",
+    				subnet_num = 1,
+    				subnet_paras_name = "all")
     
         # 执行SNN计算
         print("3. 执行SNN计算...")
@@ -286,30 +287,31 @@ timestep4时：神经元1、2、4均发放脉冲
 
 
 以上演示了一个完整的脉冲神经网络（SNN）处理流程，主要包含以下四个步骤：
+
 1. 网络定义与参数生成
--------------------
-    #. 定义一个三层前馈SNN网络（MnistSNN），包含两个全连接层和LIF神经元；
-    #. 调用net_process()函数，将网络结构、连接权重和输入数据转换为HDF5格式的参数文件。
+
+ - 定义一个三层前馈SNN网络（MnistSNN），包含两个全连接层和LIF神经元；
+ - 调用net_process()函数，将网络结构、连接权重和输入数据转换为HDF5格式的参数文件。
 
 2. 参数解析与数据结构构建
------------------------
-    #. 使用paras_process类从HDF5文件中读取网络参数；
-    #. 调用parse_collect_to_struct()将参数转换为C语言兼容的SNNData结构体。
+
+ - 使用paras_process类从HDF5文件中读取网络参数；
+ - 调用parse_collect_to_struct()将参数转换为C语言兼容的SNNData结构体。
 
 3. SNN计算执行
-----------------
-    #. 创建SNNDriver实例，加载底层SNN驱动库（libsnndriver.so）；
-    #. 调用execute()执行SNN推理计算。
+
+ - 创建SNNDriver实例，加载底层SNN驱动库（libsnndriver.so）；
+ - 调用execute()执行SNN推理计算。
 
 4. 结果处理与清理
-----------------
-    #. 获取输出脉冲序列，将C数组转换为Python列表；
-    #. 显示统计信息（输出数量、前10个结果等）；
-    #. 调用free_output()释放底层分配的内存。
+
+ - 获取输出脉冲序列，将C数组转换为Python列表；
+ - 显示统计信息（输出数量、前10个结果等）；
+ - 调用free_output()释放底层分配的内存.
 
 
 
-搭建混合神经网络
+三、搭建混合神经网络
 =================
 作为一款类脑CPU的框架，TruSynapse 除了支持常规的脉冲神经网络外，还能支持ANN/SNN混合神经网络。
 用户可以将部分子网部署在 NFU 上执行，而其他子网继续在 CPU 上运行，从而实现性能与灵活性的平衡。
@@ -346,60 +348,32 @@ timestep4时：神经元1、2、4均发放脉冲
 
 下面给出一个简单的示例，演示如何在 Trusynapse 中搭建一个混合神经网络。
 
-1. 定义混合神经网络结构
-
 .. code-block:: python
     :linenos:
 
-    import snntorch as snn
-    import torch.nn as nn
+
+    def basic_fork_example(self):
+        try:
+            pid = os.fork()
+
+            if pid < 0:
+                print("Fork失败!")
+                return
+
+            if pid == 0:
+                # 子进程
+                # 执行子进程任务
+                print("子进程: 计数(1,1)")
+                ssn_data = save_all_parse_collect_to_struct(xxx
+                driver = SNNDriver()
+                driver.execute(types.byte_ssn_data)
+                print("子进程: 任务完成")
+                os._exit(0)  # 子进程退出
+            else:
+                matrix(a,b)
+                # 父进程
+                # 等待子进程
+                pid_done, status = os.waitpid(pid, 0)
 
 
-    class SNNClassifier:
-        def __init__(self):
-            # 定义SNN子网结构
-            pass
-
-        def __call__(self, spikes):
-            # 执行SNN推理，返回脉冲计数
-            return snn_output
-    
-    class HybridInspectionNet_Simplified:
-        def __init__(self):
-            # 核心模块
-            self.encoder = TemporalContrastEncoder()      # 图像 → 脉冲
-            self.snn_core = SNNClassifier()                # 脉冲 → 脉冲计数
-            self.decoder = SpikeDecoder()                  # 脉冲计数 → 缺陷/位置
-            self.analyzer = DetailedAnalyzer()             # 原始图像 → 详细分析
-            self.defect_queue = []                          # 待分析样本队列
-
-        def forward(self, image_stream):
-            for frame in image_stream:
-                # 1. 极速检测路径（总延迟 <500µs）
-                spikes = self.encoder(frame)               # CPU预处理
-                snn_out = self.snn_core(spikes)            # SNN推理（NFU）
-                has_defect, conf, bbox = self.decoder(snn_out)  # CPU后处理
-
-                # 2. 实时决策与剔除
-                if has_defect and conf > 0.7:
-                    trigger_rejection()                     # 物理剔除
-                    self.defect_queue.append((frame, bbox, conf))
-
-                # 3. 异步批量分析（离线/线程）
-                if len(self.defect_queue) >= 32:
-                    batch = self.defect_queue[:32]
-                    self.defect_queue = self.defect_queue[32:]
-                    self._analyze_batch(batch)              # 调用详细分析
-
-        def _analyze_batch(self, batch):
-            frames = [item[0] for item in batch]
-            results = self.analyzer(frames)                 # 使用ANN分析原始图像
-            save_to_database(results)
-
-2. 将 ANN 子网部署到 CPU 上执行，SNN 子网部署到 NFU 上执行
-
-.. code-block:: python
-    :linenos:
-
-    to be continued...
 
