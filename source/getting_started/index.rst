@@ -10,5 +10,4 @@
    installation
    data_preparation
    run_a_net
-   transform_to_snndata
 
