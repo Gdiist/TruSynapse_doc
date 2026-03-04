@@ -1,0 +1,10 @@
+# 忽略构建输出目录
+build/
+# Python 编译文件
+*.pyc
+__pycache__/
+# 编辑器临时文件
+*.swp
+*.swo
+*~
+.DS_Store
