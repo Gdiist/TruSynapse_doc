@@ -1,22 +1,25 @@
 数据准备
 ========
 
-需要准备的数据包括：神经网络、网络训练权重及输入数据
+需要准备的数据包括：
+ - 神经网络结构：神经网络实例化
+ - 网络训练权重： ``connection.pkl`` 文件
+ - 输入数据： ``inputdata.txt`` 文件
 
 神经网络定义
 ------------
 
-首先需要对神经网络模型进行定义，目前主要支持使用snntorch定义网络。其他框架的网络可以通过转换为NIR格式后使用。
-下面是一个MLP网络的定义示例：
+首先需要对神经网络模型进行定义，目前主要支持使用snntorch定义网络，实例化的网络文件包含了每层的类型、参数以及连接关系等信息，供后续映射使用。其他框架的网络可以通过转换为NIR格式后使用。
+下面是一个SNN_MLP网络的定义示例：
 
 .. code-block:: python
     :linenos:
 
     import snntorch as snn
     import torch.nn as nn
-    class SNNMLP(nn.Module):
+    class SNN_MLP(nn.Module):
         def __init__(self, input_neuron_num=784, hidden1=512, hidden2=256, output_neuron_num=10, beta=0.9):
-            super(SNNMLP, self).__init__()
+            super(SNN_MLP, self).__init__()
             self.fc1 = nn.Linear(input_neuron_num, hidden1, bias=False)
             self.lif1 = snn.Leaky(beta=beta, spike_grad=surrogate.fast_sigmoid())
 
@@ -36,16 +39,15 @@
             spk3, mem3 = self.lif3(self.fc3(spk2), mem3)
             return spk3, mem3
 
-其他框架的网络通过NIR转换后的使用示例如下：
-
-.. code-block:: python
-    :linenos:
-
-    import nir
-    import nirtorch
-
-    to be continued...
-
+.. 其他框架的网络通过NIR转换后的使用示例如下：
+.. 
+.. .. code-block:: python
+..     :linenos:
+.. 
+..     import nir
+..     import nirtorch
+.. 
+..     to be continued...
 
 
 权重文件
@@ -85,7 +87,7 @@
 由于类脑芯片只支持0，1两种状态的输入，因此需要将原始输入数据（如图像、文本等）转换为脉冲化格式，并以一维数组的形式进行保存。
 常用的方式包括率编码、时间编码等，具体方法取决于输入数据的特性和应用需求。可以使用 ``snntorch.spikegen`` 中内置的编码器将其转换为脉冲序列。
 
-下面的脚本展示了如何将 MNIST 数据集中的图像转换为二值化格式，并保存为 ``inputdata.txt``文件，方便后续加载和使用。
+下面的脚本展示了如何将 MNIST 数据集中的图像转换为二值化格式，并保存为 ``inputdata.txt`` 文件，方便后续加载和使用。
 
 .. code-block:: python
     :linenos:
