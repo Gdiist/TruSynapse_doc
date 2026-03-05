@@ -198,7 +198,7 @@ timestep4时：神经元1、2、4均发放脉冲
 ================
 概述
 ----
-对于已经运行过的神经网络，用户可以直接从文件中加载网络结构、连接关系和输入数据，并构造子网执行体进行执行。此外，这种方式也支持用户将已训练好的模型根据SNNData的输入要求进行转换后直接导入到框架中执行，省去从头搭建网络的步骤。
+对于已经训练好的神经网络，用户可以直接从文件中加载网络结构、连接关系和输入数据，并构造子网执行体进行执行。此外，这种方式也支持用户将已训练好的模型根据SNNData的输入要求进行转换后直接导入到框架中执行，省去从头搭建网络的步骤。
 下面示例展示如何加载文件中的网络数据，并构造子网执行体进行执行。
 
 
@@ -364,9 +364,9 @@ timestep4时：神经元1、2、4均发放脉冲
                 # 子进程
                 # 执行子进程任务
                 print("子进程: 计数(1,1)")
-                ssn_data = save_all_parse_collect_to_struct(xxx
+                snn_data = save_all_parse_collect_to_struct()
                 driver = SNNDriver()
-                driver.execute(types.byte_ssn_data)
+                driver.execute(types.byte_snn_data)
                 print("子进程: 任务完成")
                 os._exit(0)  # 子进程退出
             else:
