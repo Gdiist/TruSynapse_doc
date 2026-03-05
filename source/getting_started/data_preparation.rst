@@ -95,10 +95,10 @@
     import numpy as np
     from torchvision import datasets, transforms
 
-    mport torch
-    rom torchvision import datasets, transforms
-    mport numpy as np
-    rom snntorch import spikegen
+    import torch
+    from torchvision import datasets, transforms
+    import numpy as np
+    from snntorch import spikegen
 
     def gen_mnist_spike(n=100, datapath='./data', filename='inputdata.txt'):
         """
