@@ -18,6 +18,75 @@
 实现方案一 ：mnist-MLP
 ----------------------
 
+数据输入演示
+^^^^^^^^^^^^
+
+1. 加载和可视化MNIST图像：
+
+.. code-block:: python
+    :linenos:
+
+    import torch
+    from torchvision import datasets, transforms
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    # 1. 加载10张MNIST图像
+    transform = transforms.ToTensor()
+    dataset = datasets.MNIST(root='../../data', train=True, download=True, transform=transform)
+    images = []
+    labels = []
+    for i in range(10):
+        image, label = dataset[i]
+        images.append(image)
+        labels.append(label)
+    
+    print(f"加载了{len(images)}张图像，标签为: {labels}")
+
+    # 2. 可视化第一张图像
+    plt.figure(figsize=(4, 4))
+    plt.imshow(images[0].squeeze(), cmap='gray')
+    plt.axis('off')
+    plt.show()
+
+执行上述代码后，将显示如下MNIST数字图像：
+
+.. image:: ../_static/images/mnist_sample_demo.png
+   :width: 400px
+   :align: center
+   :alt: MNIST样本演示
+
+2. 转换为脉冲向量：
+
+.. code-block:: python
+    :linenos:
+
+    # 3. 将10张图像转换为1D向量并拼接
+    all_vectors = []
+    for i, image in enumerate(images):
+        vector_1d = image.flatten()  # 28x28 -> 784
+        all_vectors.append(vector_1d)
+    
+    # 拼接所有向量为一个大向量 (10 * 784 = 7840)
+    combined_vector = torch.cat(all_vectors, dim=0)
+
+    # 4. 转换为脉冲向量 (阈值化为0或1)
+    threshold = 0.5  # 阈值设置为0.5
+    spike_vector = (combined_vector > threshold).int()  # 转换为整数类型
+
+    # 5. 保存脉冲向量到input.txt
+    np.savetxt('result/input.txt', spike_vector.numpy(), fmt='%d')
+    print(f"10张图像的脉冲向量已保存到: result/input.txt")
+
+执行输出结果：
+
+.. code-block:: text
+
+    10张图像的脉冲向量已保存到: result/input.txt
+
+网络结构定义
+^^^^^^^^^^^^
+
 - `mnist-MLP` 网络结构（SNN）
 
 .. code-block:: python
@@ -47,6 +116,37 @@
             spk2, mem2 = self.lif2(self.fc2(spk1), mem2)
             spk3, mem3 = self.lif3(self.fc3(spk2), mem3)
             return spk3, mem3
+
+
+
+使用NFU测试推理结果
+^^^^^^^^^^^^^^^^^^
+
+NFU推理过程详细输出：
+
+.. code-block:: text
+
+    Time(ns) | Raw_Hex  | Timestamp | GNC | Neuron | Note
+    ---------|----------|-----------|-----|--------|----------
+    11905390 | 0002c017 |     1     |  6  |   23   | Data
+    25396850 | 0004c017 |     2     |  6  |   23   | Data  
+    25396890 | 0004c012 |     2     |  6  |   18   | Data
+    31632410 | 0006c012 |     3     |  6  |   18   | Data
+    112331090| 00000001 |     -     |  -  |    -   | Finish Flag
+    220061150| 00000001 |     -     |  -  |    -   | Finish Flag
+    327831230| 00000001 |     -     |  -  |    -   | Finish Flag
+    435538630| 00000001 |     -     |  -  |    -   | Finish Flag
+    543221930| 00000001 |     -     |  -  |    -   | Finish Flag
+    650929350| 00000001 |     -     |  -  |    -   | Finish Flag
+    758702230| 00000001 |     -     |  -  |    -   | Finish Flag
+    866410990| 00000001 |     -     |  -  |    -   | Finish Flag
+
+.. **推理结果分析：**
+
+.. - **神经元激活**: 检测到第6组神经元(GNC=6)的18号和23号神经元产生输出脉冲
+.. - **时间戳序列**: 1-3个时间步内完成主要计算
+.. - **完成标志**: 8个Finish Flag表明推理过程正常完成
+.. - **输出神经元**: 18号和23号神经元可能对应不同的分类结果
 
 实现方案二 ：mnist-sparse
 -------------------------
