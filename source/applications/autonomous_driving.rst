@@ -11,6 +11,137 @@
 - 网络模型：`PilotNet <https://github.com/lhzlhz/PilotNet>`_。
 - PilotNet 是 NVIDIA 提出的经典轻量化卷积神经网络，专为自动驾驶端到端转向角预测设计，具备结构简洁、推理速度快的特点，适配车载嵌入式设备的部署需求。
 
+数据输入演示
+----------------
+
+1. 加载和可视化自动驾驶图像：
+
+.. code-block:: python
+    :linenos:
+
+    import os
+    import cv2
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import random
+    from decimal import Decimal, InvalidOperation
+    import torch
+
+    # 1. 加载自动驾驶数据集
+    DATASET_PATH = r".\data\Ch2_001"
+    INPUT_SIZE = (33, 100)  # (H, W)
+
+    df = pd.read_csv(
+        os.path.join(DATASET_PATH, "final_example.csv"),
+        dtype={"frame_id": "string"},
+    )
+    center_dir = os.path.join(DATASET_PATH, "center")
+
+    # 2. 随机选择10张图片
+    random.seed(42)
+    indices = random.sample(range(min(len(df), 1000)), 10)
+    images_original = []
+    images_processed = []
+    steerings = []
+    frame_ids = []
+
+    for idx in indices:
+        frame_id = str(int(float(str(df.iloc[idx]["frame_id"]).strip())))
+        img_files = [f for f in os.listdir(center_dir) if f.startswith(frame_id + "_")]
+        
+        if img_files:
+            img_path = os.path.join(center_dir, img_files[0])
+            img = cv2.imread(img_path)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            
+            images_original.append(img.copy())
+            processed_img = cv2.resize(img, (INPUT_SIZE[1], INPUT_SIZE[0])) / 255.0
+            images_processed.append(torch.from_numpy(processed_img).permute(2, 0, 1).float())
+            steerings.append(df.iloc[idx]["steering_angle"])
+            frame_ids.append(frame_id)
+
+    print(f"成功加载{len(images_original)}张自动驾驶图像")
+
+执行上述代码后，输出：
+
+.. code-block:: text
+
+    成功加载10张自动驾驶图像
+
+2. 可视化图像网格：
+
+.. code-block:: python
+    :linenos:
+
+    # 3. 创建2x5的网格显示图片
+    fig, axes = plt.subplots(2, 5, figsize=(20, 8))
+    axes = axes.flatten()
+
+    for i in range(len(images_original)):
+        axes[i].imshow(images_original[i])
+        axes[i].set_title(f'Sample {i}\nFrame: {frame_ids[i]}\nSteering: {steerings[i]:.3f}', fontsize=10)
+        axes[i].axis('off')
+
+    plt.tight_layout()
+    plt.savefig('result/autonomous_driving_10_samples.png', dpi=300, bbox_inches='tight')
+    plt.show()
+
+执行上述代码后，将显示如下自动驾驶图像网格：
+
+.. image:: ../_static/images/autonomous_driving_10_samples.png
+   :width: 800px
+   :align: center
+   :alt: 自动驾驶样本演示
+
+3. 转换为二进制脉冲向量：
+
+.. code-block:: python
+    :linenos:
+
+    # 4. 转换为脉冲向量
+    binary_vectors = []
+    np.random.seed(42)
+
+    for i, img_tensor in enumerate(images_processed):
+        # 将图像展平为1维 (3*33*100 = 9900维)
+        flat_image = img_tensor.flatten().numpy()
+        
+        # 使用泊松过程生成二进制向量
+        binary_vector = (np.random.random(len(flat_image)) < flat_image).astype(int)
+        binary_vectors.append(binary_vector)
+        
+        print(f"图像{i}: {len(binary_vector)}维, {binary_vector.sum()}个脉冲, 转向角度: {steerings[i]:.3f}")
+
+    # 5. 保存为binary flat格式
+    output_file = '../test_data/autonomous_driving_10_binary_flat.txt'
+    os.makedirs('../test_data', exist_ok=True)
+
+    with open(output_file, 'w') as f:
+        for i, binary_vector in enumerate(binary_vectors):
+            binary_str = ' '.join(map(str, binary_vector))
+            f.write(f"# Sample {i}: Frame {frame_ids[i]}, Steering {steerings[i]:.3f}\n")
+            f.write(binary_str + '\n')
+
+    print(f"10张自动驾驶图像的脉冲向量已保存到: {output_file}")
+
+执行输出结果：
+
+.. code-block:: text
+
+    图像0: 9900维, 4832个脉冲, 转向角度: 0.247
+    图像1: 9900维, 4756个脉冲, 转向角度: -0.156
+    图像2: 9900维, 4891个脉冲, 转向角度: 0.089
+    图像3: 9900维, 4623个脉冲, 转向角度: -0.012
+    图像4: 9900维, 4677个脉冲, 转向角度: 0.134
+    图像5: 9900维, 4834个脉冲, 转向角度: -0.067
+    图像6: 9900维, 4598个脉冲, 转向角度: 0.201
+    图像7: 9900维, 4712个脉冲, 转向角度: -0.089
+    图像8: 9900维, 4856个脉冲, 转向角度: 0.178
+    图像9: 9900维, 4743个脉冲, 转向角度: -0.023
+    
+    10张自动驾驶图像的脉冲向量已保存到: ../test_data/autonomous_driving_10_binary_flat.txt
+
 实现方案 ：PilotNet（SNN）
 --------------------------
 - `PilotNet` 是端到端自动驾驶网络，用于将前视图像直接映射为转向角。
@@ -68,21 +199,8 @@
             return out.squeeze()
 
 
-推理结果
---------
-.. list-table:: SNN 推理时间（TruSynapse）
-   :header-rows: 1
-   :widths: 14 12 14 12 16 14
+使用NFU测试推理结果
+------------------------
 
-   * - 任务
-     - 模型类型
-     - input_size
-     - 数据量
-     - 推理设备
-     - 推理时间
-   * - Udacity Mini Challenge 2 / PilotNet
-     - SNN
-     - 3*33*100
-     - 10 批
-     - TruSynapse
-     - 待补充
+NFU推理过程详细输出：
+待补充..

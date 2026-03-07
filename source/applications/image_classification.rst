@@ -51,7 +51,7 @@
 
 执行上述代码后，将显示如下MNIST数字图像：
 
-.. image:: ../_static/images/mnist_sample_demo.png
+.. image:: ../_static/images/mnist_sample_demo15.png
    :width: 400px
    :align: center
    :alt: MNIST样本演示
@@ -126,27 +126,21 @@ NFU推理过程详细输出：
 
 .. code-block:: text
 
+    输出层神经元到GNC的映射:
+    {1552: 0, 1553: 0, 1554: 0, 1555: 0, 1556: 0, 1557: 0, 1558: 0, 1559: 0, 1560: 0, 1561: 0}
+
     Time(ns) | Raw_Hex  | Timestamp | GNC | Neuron | Note
     ---------|----------|-----------|-----|--------|----------
-    11905390 | 0002c017 |     1     |  6  |   23   | Data
-    25396850 | 0004c017 |     2     |  6  |   23   | Data  
-    25396890 | 0004c012 |     2     |  6  |   18   | Data
-    31632410 | 0006c012 |     3     |  6  |   18   | Data
-    112331090| 00000001 |     -     |  -  |    -   | Finish Flag
-    220061150| 00000001 |     -     |  -  |    -   | Finish Flag
-    327831230| 00000001 |     -     |  -  |    -   | Finish Flag
-    435538630| 00000001 |     -     |  -  |    -   | Finish Flag
-    543221930| 00000001 |     -     |  -  |    -   | Finish Flag
-    650929350| 00000001 |     -     |  -  |    -   | Finish Flag
-    758702230| 00000001 |     -     |  -  |    -   | Finish Flag
-    866410990| 00000001 |     -     |  -  |    -   | Finish Flag
+    28917630 | 00080617 |     4     |  0  |  1559  | Data
 
-.. **推理结果分析：**
 
-.. - **神经元激活**: 检测到第6组神经元(GNC=6)的18号和23号神经元产生输出脉冲
-.. - **时间戳序列**: 1-3个时间步内完成主要计算
-.. - **完成标志**: 8个Finish Flag表明推理过程正常完成
-.. - **输出神经元**: 18号和23号神经元可能对应不同的分类结果
+
+**推理结果分析：**
+
+- **神经元映射**: 输出层神经元1552-1561对应数字0-9，都映射到GNC=0
+- **神经元激活**: 检测到GNC=0的1559号神经元产生输出脉冲
+- **分类结果**: 1559号神经元对应数字7
+
 
 实现方案二 ：mnist-sparse
 -------------------------
@@ -154,6 +148,14 @@ NFU推理过程详细输出：
 - `mnist-sparse` 采用稀疏训练策略，参考文献：`Rigging the Lottery: Making All Tickets Winners <https://ojs.aaai.org/index.php/AAAI/article/view/25079>`_。
 - 与 `mnist-MLP` 保持相同层级拓扑（784-512-256-10），但在线性层引入稀疏连接掩码。
 - 训练阶段采用剪枝-再生长（prune-regrow）策略，目标稀疏度可配置（当前配置为 90%）。
+
+数据输入说明
+^^^^^^^^^^^^
+
+**输入数据与mnist-MLP相同**：使用相同的10张MNIST图像和相同的脉冲向量转换方法，输入数据文件为 `result/input.txt`。
+
+网络结构定义
+^^^^^^^^^^^^
 
 .. code-block:: python
     :linenos:
@@ -189,10 +191,39 @@ NFU推理过程详细输出：
                  for i in range(len(sizes) - 1)]
             )
 
+
+
+使用NFU测试推理结果
+^^^^^^^^^^^^^^^^^^
+
+NFU推理过程详细输出：
+
+.. code-block:: text
+
+    Time(ns) | Raw_Hex  | Timestamp | GNC | Neuron | Note
+    ---------|----------|-----------|-----|--------|----------
+    8316150  | 00080617 |     4     |  0  |  1559  | Data
+
+
+**推理结果分析（稀疏网络）：**
+
+- **神经元激活**: 检测到GNC=0的1559号神经元产生输出脉冲
+- **分类结果**: 1559号神经元对应数字7
+
+
+
 实现方案三 ：mnist-conv
 -----------------------
 
 - `mnist-conv` 网络结构（SNN）
+
+数据输入说明
+^^^^^^^^^^^^
+
+**输入数据与mnist-MLP相同**：使用相同的10张MNIST图像和相同的脉冲向量转换方法，输入数据文件为 `result/input.txt`。
+
+网络结构定义
+^^^^^^^^^^^^
 
 .. code-block:: python
     :linenos:
@@ -220,8 +251,118 @@ NFU推理过程详细输出：
             spk3, mem3 = self.lif3(self.fc(spk2_flat), mem3)
             return spk3, mem3
 
+使用NFU测试推理结果
+^^^^^^^^^^^^^^^^^^
+
+NFU推理过程详细输出：
+待补充..
+
+.. .. code-block:: text
+
+..     输出层神经元到GNC的映射:
+..     {10192: 1, 10193: 1, 10194: 1, 10195: 1, 10196: 1, 10197: 1, 10198: 1, 10199: 1, 10200: 1, 10201: 1}
+
+..     Time(ns) | Raw_Hex  | Timestamp | GNC | Neuron | Note
+..     ---------|----------|-----------|-----|--------|----------
+..     11905390 | 0002c017 |     1     |  6  |   23   | Data
+..     25396850 | 0004c017 |     2     |  6  |   23   | Data  
+..     25396890 | 0004c012 |     2     |  6  |   18   | Data
+..     31632410 | 0006c012 |     3     |  6  |   18   | Data
+
+
 实现方案四 ：cifar10-conv
 -------------------------
+
+数据输入演示
+^^^^^^^^^^^^
+
+1. 加载和可视化CIFAR-10图像：
+
+.. code-block:: python
+    :linenos:
+
+    import torch
+    from torchvision import datasets, transforms
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import os
+    import random
+
+    # CIFAR-10类别标签
+    CIFAR10_CLASSES = ['plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+
+    # 1. 加载CIFAR-10数据集并随机选择10张图片
+    transform = transforms.ToTensor()
+    dataset = datasets.CIFAR10(root='../data/CIFAR10', train=True, download=True, transform=transform)
+    
+    random.seed(42)
+    indices = random.sample(range(len(dataset)), 10)
+    images = []
+    labels = []
+    
+    for idx in indices:
+        image, label = dataset[idx]
+        images.append(image)
+        labels.append(label)
+
+    # 2. 创建2x5的网格显示图片
+    fig, axes = plt.subplots(2, 5, figsize=(15, 6))
+    axes = axes.flatten()
+
+    for i in range(10):
+        axes[i].imshow(images[i].permute(1, 2, 0))
+        axes[i].set_title(f'Pos {i}: {CIFAR10_CLASSES[labels[i]]}\n(Label: {labels[i]})')
+        axes[i].axis('off')
+
+    plt.tight_layout()
+    plt.savefig('result/cifar10_random_10_images.png', dpi=300, bbox_inches='tight')
+    plt.show()
+
+    print(f"加载了{len(images)}张图像，标签为: {labels}")
+
+执行上述代码后，将显示如下CIFAR-10图像网格：
+
+.. image:: ../_static/images/summary_all_images.png
+   :width: 800px
+   :align: center
+   :alt: CIFAR-10样本演示
+
+2. 转换为二进制脉冲向量：
+
+.. code-block:: python
+    :linenos:
+
+    # 3. 泊松编码转换为二进制脉冲向量
+    binary_vectors = []
+    np.random.seed(42)
+    
+    for i, image in enumerate(images):
+        # 将图像展平为1维 (3072维: 3×32×32)  
+        flat_image = image.flatten().numpy()
+        # 使用泊松过程生成二进制向量
+        binary_vector = (np.random.random(len(flat_image)) < flat_image).astype(int)
+        binary_vectors.append(binary_vector)
+
+    # 4. 保存为binary flat格式
+    output_file = '../test_data/cifar10_10_binary_flat.txt'
+    os.makedirs('../test_data', exist_ok=True)
+
+    with open(output_file, 'w') as f:
+        for i, binary_vector in enumerate(binary_vectors):
+            binary_str = ' '.join(map(str, binary_vector))
+            f.write(f"# Image {i}: Label {labels[i]} ({CIFAR10_CLASSES[labels[i]]})\n")
+            f.write(binary_str + '\n')
+
+    print(f"10张CIFAR-10图像的脉冲向量已保存到: {output_file}")
+
+执行输出结果：
+
+.. code-block:: text
+   
+    10张CIFAR-10图像的脉冲向量已保存到: ../test_data/cifar10_10_binary_flat.txt
+
+网络结构定义
+^^^^^^^^^^^^
 
 - `cifar10-conv` 网络结构（SNN）
 
@@ -257,42 +398,8 @@ NFU推理过程详细输出：
             spk4, mem4 = self.lif4(self.fc(spk3_flat), mem4)
             return spk4, mem4
 
-推理结果
---------
+使用NFU测试推理结果
+^^^^^^^^^^^^^^^^^^
 
-.. list-table:: SNN 推理时间（TruSynapse）
-   :header-rows: 1
-   :widths: 14 12 12 12 16 14
-
-   * - 任务
-     - 模型类型
-     - input_size
-     - 数据量
-     - 推理设备
-     - 推理时间
-   * - mnist-MLP
-     - SNN
-     - 1x28x28
-     - 100 批
-     - TruSynapse
-     - 0.0744 s
-   * - mnist-sparse
-     - SNN
-     - 1x28x28
-     - 100 批
-     - TruSynapse
-     - 待补充
-   * - mnist-conv
-     - SNN
-     - 1x28x28
-     - 100 批
-     - TruSynapse
-     - 待补充
-   * - cifar10-conv
-     - SNN
-     - 3x32x32
-     - 10 批
-     - TruSynapse
-     - 待补充
-
-
+NFU推理过程详细输出：
+待补充..
