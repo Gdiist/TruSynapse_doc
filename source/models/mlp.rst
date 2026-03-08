@@ -68,11 +68,11 @@
 
     net = MnistSNN(input_neuron_num=784, hidden1=512, hidden2=256, output_neuron_num=10, beta=0.9)
 
-    connections1 = linear_connection_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids)
+    connections1 = linear_connections_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids)
 
-    connections2 = linear_connection_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids)
+    connections2 = linear_connections_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids)
 
-    connections3 = linear_connection_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids)
+    connections3 = linear_connections_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids)
 
     connections = connections1 + connections2 + connections3
     

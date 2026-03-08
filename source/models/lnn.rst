@@ -156,7 +156,7 @@
         
           return torch.stack(spk_I_rec), torch.stack(spk_M_rec), torch.stack(spk_N_rec)
 
-    connections = linear_connection_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids)
+    connections = linear_connections_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids)
 
     with open("/your/path/to/input.txt") as file:
 

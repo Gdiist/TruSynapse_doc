@@ -23,6 +23,7 @@
 
     import snntorch as snn
     import torch.nn as nn
+    from snntorch import surrogate
     class SNNMLP(nn.Module):
         def __init__(self, input_neuron_num=784, hidden1=512, hidden2=256, output_neuron_num=10, beta=0.9):
             super(SNNMLP, self).__init__()
@@ -57,7 +58,9 @@
 .. code-block:: python
     :linenos:
 
-    def connection_trans(connection_tensor, start1layer_ID, block_num):
+    import numpy as np
+
+    def connections_trans(connection_tensor, start1layer_ID, block_num):
         """
         将二维连接张量转换为三元组列表。
         connection_tensor: 2D tensor，形状为 (neuron_in_src_block, neuron_in_dst_block)
@@ -90,9 +93,9 @@
     for i in connection_origin_value:
         print(i.shape)
     
-    connection_input = connection_trans(connection_origin_value[0], 0, 1)
-    connection_hidden1 = connection_trans(connection_origin_value[1], 784, 1)
-    connection_output = connection_trans(connection_origin_value[2], 1296, 1)
+    connection_input = connections_trans(connection_origin_value[0], 0, 1)
+    connection_hidden1 = connections_trans(connection_origin_value[1], 784, 1)
+    connection_output = connections_trans(connection_origin_value[2], 1296, 1)
     connections = connection_input + connection_hidden1 + connection_output
 
 
@@ -106,12 +109,14 @@
 .. code-block:: python
     :linenos:
     
-
+    from torchvision import datasets, transforms
+    import numpy as np
+    
     def convert_mnist_to_spike(n=100, thr=0.5, datapath='./data'):
 
         """Convert MNIST images to binary (spike) representation.
         :param n: int
-        脉冲转化的阈值，像素值大于该阈值将被视为脉冲（1），否则为非脉冲（0）（默认: 0.5）。
+        脉冲转化的样本数量，默认处理100个样本。
         :param thr: float
         脉冲转化的阈值，像素值大于该阈值将被视为脉冲（1），否则为非脉冲（0）（默认：0.5）。
         """
@@ -155,41 +160,57 @@
 
 6. 处理输出结果
 ----------------
-NFU的输出结果保存在输出spike空间，用户可以直接读取该空间的数据，也可以使用框架的工具进行转换
+NFU的输出结果保存在输出spike空间，用户可以直接读取该空间的数据，也可以使用框架的工具进行转换。
 
-1、NFU输出结果
+NFU 直接输出结果以 32 位无符号整数表示，各字段含义如下：
 
-NFU直接输出结果以32位数据表示，具体表示形式为：
+.. list-table:: NFU 输出数据格式（32位）
+   :header-rows: 1
+   :align: center
+   :widths: 20 20 60
 
-15bit：timestep信息，表示该神经元输出是哪个时间步产生
+   * - 位范围
+     - 字段名
+     - 说明
+   * - [31:17] (15bit)
+     - timestep
+     - 时间步信息，表示该神经元输出是在哪个时间步产生的
+   * - [16:13] (4bit)
+     - GNC号
+     - 输出层神经元所在的 GNC 编号
+   * - [12:0] (13bit)
+     - 逻辑ID
+     - 该神经元的逻辑编号
 
-4bit：代表着输出层神经元所在的GNC号
+我们提供了转换工具对输出结果进行整理，转换后的输出数据为一个二维数组，每个元素包含了所有输出层神经元信息，数组的索引代表 timestep 信息，转换工具会统计该 timestep 所有输出层神经元发放脉冲的情况，若该 timestep 有发放则该神经元所在的位置为1，否则为 0。
 
-13bit：代表着该神经元的逻辑ID
-
-2、转换工具输出
-
-我们提供了转换工具对输出结果进行整理，具体输出结果为：
-
-输出格式：二维数组，每个元素包含了所有输出层神经元信息
-
-转换后的结果中，数组的索引代表着timestep信息，即转换工具会统计该timestep所有输出层神经元发放脉冲的情况，若该timestep有发放则该神经元所在的位置置1，否则置0
+转换工具会统计该 timestep 所有输出层神经元发放脉冲的情况，若该 timestep 有发放则该神经元所在的位置为1，否则为 0
 
 示例：
 
-假设一个神经网络有4个输出层神经元：
+.. code-block:: text
 
-timestep0时：2号神经元与4号神经元有输出
+    假设一个神经网络有4个输出层神经元：
 
-timestep1时：一号神经元有输出
+    timestep0时：2号神经元与4号神经元有输出
 
-timestep2时：所有输出层神经元均发放脉冲
+    timestep1时：一号神经元有输出
 
-timestep3时：所有输出层神经元均不发放脉冲
+    timestep2时：所有输出层神经元均发放脉冲
 
-timestep4时：神经元1、2、4均发放脉冲
+    timestep3时：所有输出层神经元均不发放脉冲
 
-则转换后的输出结果为：[[0101],[1000],[1111],[0000],[1101]]
+    timestep4时：神经元1、2、4均发放脉冲
+
+则转换后的输出结果为：
+
+.. code-block:: text
+
+    [[0,1,0,1],  # timestep0
+     [1,0,0,0],  # timestep1
+     [1,1,1,1],  # timestep2
+     [0,0,0,0],  # timestep3
+     [1,1,0,1]]  # timestep4
 
 该输出会保存为outputdata供用户调用，用户可根据网络用途对NFU的输出进行处理。
 

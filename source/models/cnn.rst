@@ -69,11 +69,11 @@
 
             return spk1, spk2, spk3, mem3
 
-    connections1 = conv_connection_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids,stride=(1, 1), padding=(1,1), dilation=(1, 1))
+    connections1 = conv_connections_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids,stride=(1, 1), padding=(1,1), dilation=(1, 1))
 
-    connections2 = conv_connection_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids,stride=(2, 2), padding=(1,1), dilation=(1, 1))
+    connections2 = conv_connections_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids,stride=(2, 2), padding=(1,1), dilation=(1, 1))
 
-    connections3 = linear_connection_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids)
+    connections3 = linear_connections_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids)
 
     connections = connections1 + connections2 + connections3
 
