@@ -1,0 +1,40 @@
+/* ------------------------------表格顶端对齐------------------------- */
+/* 应用于自定义的 top-align-table 类 */
+.top-align-table td {
+    vertical-align: top !important;
+}
+
+
+/* ------------------------------表格无边框无底纹------------------------- */
+/* 应用于自定义的 excel-style-table 类 */
+.excel-style-table {
+    /* 确保表格本身没有边框 */
+    border: none !important;
+}
+/* 针对表格中所有的单元格（包括表头和数据行） */
+.excel-style-table table,
+.excel-style-table td,
+.excel-style-table th {
+    /* 移除所有边框 */
+    border: none !important;
+    /* 设置背景色为完全透明或白色，覆盖主题可能添加的斑马纹 */
+    background-color: transparent !important;
+    /* 可以根据需要调整单元格的内边距，让表格更紧凑，0 为无内边距 */
+    padding: 2px 5px !important; 
+}
+
+/* 特别针对表头，移除任何底纹 */
+.excel-style-table th {
+    background-color: transparent !important;
+    /* 如果表头文字有特殊颜色，也可以重置，这里保持与正文一致 */
+    /* color: inherit !important; */
+}
+
+/* 覆盖主题可能为行添加的斑马纹 (zebra striping) */
+.excel-style-table tbody tr {
+    background-color: transparent !important;
+}
+.excel-style-table tbody tr:nth-child(odd),
+.excel-style-table tbody tr:nth-child(even) {
+    background-color: transparent !important;
+}

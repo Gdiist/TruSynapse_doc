@@ -198,117 +198,122 @@ timestep4时：神经元1、2、4均发放脉冲
 =====================
 概述
 ----
-对于已经训练好的神经网络，用户可以直接从文件中加载网络结构、连接关系和输入数据，并构造子网执行体进行执行。此外，这种方式也支持用户将已训练好的模型根据SNNData的输入要求进行转换后直接导入到框架中执行，省去从头搭建网络的步骤。
-下面示例展示如何加载文件中的网络数据，并构造子网执行体进行执行。
+对于已经训练好的神经网络，用户可以直接从多个文件中加载参数构造子网执行体，并调用NFU驱动进行执行。此方法无需网络处理步骤。
 
+文件说明
+----------
+需要加载的文件说明如下:
+
+.. list-table::
+    :align: center
+
+    * - 示例文件路径
+      - 类型
+      - 内容
+    * - ./snn_data/inputspike.txt
+      - 文本文件
+      - 输入脉冲数据
+    * - ./snn_data/connections.pkl
+      -	| pickle生成的二进制文件
+        | (也支持Pytorch的.pth文件)
+      - 用户的SNN网络结构参数
+    * - ./snn_data/neuron.data
+      - 数据文件
+      - 神经元模型参数数据
+    * - ./snn_data/1_0.hdf5
+      - HDF5文件
+      - 处理后的SNN网络参数
+
+其中，HDF5的文件来源有两种，一种是调用本框架的 ``net_process`` 模块生成自有格式的HDF5文件；第二种是外源的HDF5文件经过工具函数转换后得到（待实现）。
+
+示例流程
+---------
+下面的流程图将展示如何调用 ``net_process`` 模块生成自有格式的HDF5文件，随后再加载该HDF5文件中的数据，并构造子网执行体进行计算。
 
 .. figure:: ../_static/images/workflow.png
    :align: center
    :width: 80%
    :alt: 整体流程示意图
 
+示例代码
+---------
+
+保存参数至自有格式的HDF5文件
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+下面演示了一个完整的脉冲神经网络（SNN）处理流程，此流程会从文件中提取参数并进行处理，随后存至自有格式的HDF5文件中，主要包含以下两个步骤：
+
+1. 定义一个三层前馈SNN网络（MnistSNN），包含两个全连接层和LIF神经元；
+2. 用net_process()函数，将网络结构、连接权重和输入数据转换为HDF5格式的参数文件。
+
 .. code-block:: python
     :linenos:
 
-    import ctypes
     import torch.nn as nn
     import snntorch as snn
     from snntorch import surrogate
-    from ctypes import ( c_uint32,POINTER)
     from net_process import net_process
-    from net_to_run import paras_process, SNNDriver
-    
     class MnistSNN(nn.Module):
         def __init__(self, input_neuron_num=4, hidden1=2, hidden2=2, output_neuron_num=3, beta=0.9):
             super(MnistSNN, self).__init__()
             self.fc1 = nn.Linear(input_neuron_num, hidden1, bias=False)
             self.lif1 = snn.Leaky(beta=beta, spike_grad=surrogate.fast_sigmoid())
+
             self.fc2 = nn.Linear(hidden1, hidden2, bias=False)
             self.lif2 = snn.Leaky(beta=beta, spike_grad=surrogate.fast_sigmoid())
+
             self.fc3 = nn.Linear(hidden2, output_neuron_num, bias=False)
             self.lif3 = snn.Leaky(beta=beta, spike_grad=surrogate.fast_sigmoid())
         def forward(self, x):
             mem1 = self.lif1.init_leaky()
             mem2 = self.lif2.init_leaky()
             mem3 = self.lif3.init_leaky()
-    
+
             spk1, mem1 = self.lif1(self.fc1(x), mem1)
             spk2, mem2 = self.lif2(self.fc2(spk1), mem2)
             spk3, mem3 = self.lif3(self.fc3(spk2), mem3)
             return spk3, mem3
     def main():
-        
-        # 生成并保存HDF5文件
-        print("1. 生成并保存HDF5文件...")
+
         # 实例化网络
         SNN_net = MnistSNN()
         # 如果想要存入hdf5的参数，可用变量获取net_process的返回值，如 paras = net_process(...)
-        # 这里hdf5文件名经过路径校验后，会从1.hdf5变为1_0.hdf5
+        # 这里hdf5文件名经过路径校验后，会从"1.hdf5"变为"1_0.hdf5"
         net_process(SNN_net,connection_path="./snn_data/connections.pkl",inputdata_path="./snn_data/inputspike.txt",output_file_path="./snn_data/1.hdf5")
-        
-        # 解析并转换参数
-        print("2. 从HDF5文件中解析参数...")
-        # 从HDF5文件中解析参数并构建SNNData结构体
-        hdf5paras_convert = paras_process()
-        snn_data = hdf5paras_convert.parse_collect_to_struct(
-                    spikes_in_path="./snn_data/inputspike.txt",
-    				neurondata_in_path="./snn_data/neuron.data",
-    				subnetsandparas_in_path = "./snn_data/1_0.hdf5",
-    				subnet_num = 1,
-    				subnet_paras_name = "all")
-    
-        # 执行SNN计算
-        print("3. 执行SNN计算...")
-        driver = SNNDriver(lib_path='./libsnndriver.so')
-        driver.execute(ctypes.byref(snn_data))
-        
-        # 处理输出结果
-        print("4. 处理输出结果...")
-        if snn_data.output_data and snn_data.output_len > 0:
-            # 将C数组转换为Python列表
-            output_array = ctypes.cast(snn_data.output_data, 
-                                     POINTER(c_uint32 * snn_data.output_len))
-            output_results = [output_array.contents[i] for i in range(snn_data.output_len)]
-            
-            print(f"   输出脉冲: {len(output_results)} 个")
-            print(f"   全部输出: {output_results}")
-            print(f"   前10个输出: {output_results[:10]}")
-            
-            # 释放C库分配的内存
-            driver.free_output(ctypes.byref(snn_data))
-            print("   输出内存已释放")
-        else:
-            print("   警告: 未获得输出结果")
-        
-        print("=== SNN计算完成 ===")
-    
+
     if __name__ == "__main__":
-        main()    
+        main()
 
+从HDF5文件中加载参数并执行计算
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-以上演示了一个完整的脉冲神经网络（SNN）处理流程，主要包含以下四个步骤：
+下面演示了从HDF5文件及其他文件中读取数据，并调用NFU驱动执行计算的流程，主要包含以下两个步骤：
 
-1. 网络定义与参数生成
+1. 实例化 ``paras_process`` 类
+2. 调用类中的 ``execute_computing`` 函数执行计算
 
- - 定义一个三层前馈SNN网络（MnistSNN），包含两个全连接层和LIF神经元；
- - 调用net_process()函数，将网络结构、连接权重和输入数据转换为HDF5格式的参数文件。
+输出脉冲说明
+ - 注意: 输出脉冲列表中的首个“1”表示存在输出，此为标志位，并非实际的输出脉冲，实际输出脉冲应从列表第二个元素开始计算；
+ - 输出脉冲的格式: 一个输出脉冲数据共32位，其中0~13为物理神经元号，14~17为GNC号，17~31为时间步数。
 
-2. 参数解析与数据结构构建
+.. code-block:: python
+    :linenos:
 
- - 使用paras_process类从HDF5文件中读取网络参数；
- - 调用parse_collect_to_struct()将参数转换为C语言兼容的SNNData结构体。
-
-3. SNN计算执行
-
- - 创建SNNDriver实例，加载底层SNN驱动库（libsnndriver.so）；
- - 调用execute()执行SNN推理计算。
-
-4. 结果处理与清理
-
- - 获取输出脉冲序列，将C数组转换为Python列表；
- - 显示统计信息（输出数量、前10个结果等）；
- - 调用free_output()释放底层分配的内存.
-
+    from net_to_run import paras_process
+    def main():
+        
+        # 从文件中解析参数并执行计算
+        process = paras_process()
+        # 获取计算结果
+        source_results = process.execute_computing(spikes_in_path="./snn_data/inputspike.txt",
+                                                neurondata_in_path="./snn_data/neuron.data",
+                                                subnetsandparas_in_path = "./snn_data/1_0.hdf5",
+                                                subnet_num = 1)
+        # 打印计算结果
+        print(source_results)
+        
+    if __name__ == "__main__":
+        main()
 
 
 三、搭建混合神经网络

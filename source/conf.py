@@ -80,6 +80,10 @@ latex_elements = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_css_files = [
+    'custom.css',
+]
+
 # 侧边栏配置
 html_sidebars = {
     '**': ['globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html']

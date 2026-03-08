@@ -16,7 +16,7 @@ Welcome to TruSynapse's Documentation!
    models/index
    applications/index
    higher_level_use/index
-   api_documentation/index
+   api_datastruct_documentation/index
    
 
 
