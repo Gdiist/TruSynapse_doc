@@ -1,0 +1,5 @@
+# Sphinx documentation dependencies
+sphinx>=5.0.0
+sphinx-rtd-theme>=1.0.0
+sphinx-copybutton>=0.5.0
+sphinx-togglebutton>=0.3.0
