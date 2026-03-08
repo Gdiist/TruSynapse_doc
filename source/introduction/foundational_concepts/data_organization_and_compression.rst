@@ -30,12 +30,12 @@
 
 传统上，连接信息常用两张表来表示：
 
-- 权重表：``Weight<i,j>`` 表示从 ``i`` 到 ``j`` 的权重值（若为 0 则无效）。
-- 连接表：``C<i,j>`` 为 ``1`` 表示存在连接， ``0`` 表示无连接。
+- 权重表: ``Weight<i,j>`` 表示从 ``i`` 到 ``j`` 的权重值。
+- 连接表: ``C<i,j>`` 为 ``1`` 表示存在连接， ``0`` 表示无连接。
 
-二者关系：在权重表中非零的位置，连接表对应位置必然为 ``1``。
+二者关系: 在权重表中非零的位置，连接表对应位置必然为 ``1``。
 
-TruSynapse 的做法是将两张表合并为一张表，在连接记录中直接存储权重信息，从而减少冗余、改善压缩效果并提高访存效率。
+TruSynapse的做法是将两张表合并为一张表，在连接记录中直接存储权重信息。
 
 .. figure:: ../../_static/images/weight_and_connection.png 
    :alt: Weight and Connection Representation
@@ -46,7 +46,7 @@ TruSynapse 的做法是将两张表合并为一张表，在连接记录中直接
 
 
 
-连接关系采用了图4所示的压缩存储方式：
+为了进一步提高压缩率和访存效率，连接关系采用了图4所示的压缩存储方式:
 
 .. figure:: ../../_static/images/data_compression.png
    :alt: Data Compression
@@ -56,8 +56,7 @@ TruSynapse 的做法是将两张表合并为一张表，在连接记录中直接
    图4 连接表的压缩存储方式
 
 
+上述压缩后的连接关系表 :math:`C` 需要拆分到多个NFU中:
 
-上述压缩后的连接关系表C需要拆分到多个NFU中：
-
-- 每个NFU只存储子表``C[i]``, ``i``为GNC ID。``C = ∪C[i]``
-- 各子表不同，``∀i,j(i⧧j) C[i]∩C[j] = ∅``
+- 每个 NFU 只存储子表 :math:`C[i]` ( :math:`i` 为 GNC的ID)。所有子表的并集构成全局表 :math:`C`, :math:`C = \bigcup_{i \in I} C[i]`。
+- 各子表不同， :math:`\forall i,j(i\neq j), C[i]\cap C[j] = \emptyset`
