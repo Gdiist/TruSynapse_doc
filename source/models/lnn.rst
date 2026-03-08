@@ -120,19 +120,19 @@
         
           for t in range(time_steps):  # 按时间步推理
 
-              # I神经元的输入：来自外部输入
+              # I神经元的输入: 来自外部输入
 
               input_I = self.input_to_I(spike_input[t])
 
               spk_I, mem_I = self.neuron_I(input_I, mem_I)
             
-              # M神经元的输入：来自上一个时间步的I神经元
+              # M神经元的输入: 来自上一个时间步的I神经元
 
               input_M = self.I_to_M(spk_I_prev)
 
               spk_M, mem_M = self.neuron_M(input_M, mem_M)
             
-              # N神经元的输入：来自上一个时间步的M神经元
+              # N神经元的输入: 来自上一个时间步的M神经元
 
               input_N = self.M_to_N(spk_M_prev)
 
