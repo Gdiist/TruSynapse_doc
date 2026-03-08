@@ -359,6 +359,36 @@ API 文档
     输出:
     'data_list' :加入了输出神经元数据的整体数据列表
 
+框架封装API
+-------------------
+(1) **framework** 调用本框架进行数据准备
+
+.. code-block:: bash
+    :linenos:
+
+    framework(net,connections,inputdata):
+
+    功能：调用本框架流程完成网络映射与空间分配
+    输入：
+    'net' :脉冲神经网络模型
+    'connections' :描述连接关系的三元组
+    'inputdata' :神经网络的输入数据数组
+    输出：
+    'data' :网络映射结果与空间分配结果
+
+(2) **run** 启动NFU进行连接计算
+
+.. code-block:: bash
+    :linenos:
+
+    run(data) :
+
+    功能 :加载框架计算数据并启动NFU进行连接计算
+    输入 ：
+    'data' :框架运算的映射结果以及看见分配结果
+    输出 ：
+    'net_output' :网络推理结果，以二进制数组形式展示
+
 HDF5接口及驱动API
 -------------------
 (1) **net_process** 网络处理
