@@ -176,26 +176,7 @@ API 文档
     输出:
     'net' :根据输入要求形成的脉冲神经网络
 
-(12) **conv_connections_trans** 卷积层连接矩阵转换三元组
-
-.. code-block:: bash
-    :linenos:
-
-    conv_connections_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids,stride=(1, 1), padding=(0, 0), dilation=(1, 1)) :
-
-    功能:将卷积层的连接矩阵转换为描述连接关系的三元组
-    输入:
-    'weight_matrix':四维权重矩阵，形状为(输出通道数，输入通道数，卷积核高，卷积核宽)
-    'input_size':输入尺寸
-    'input_neuron_ids':连接的输入层神经元ID列表
-    'output_neuron_ids':连接的输出层ID列表
-    'stride':卷积步长，默认为(1,1)
-    'padding':填充值，默认为(0,0)
-    'dilation':膨胀率，默认为(1,1)
-    输出:
-    'connections' :描述连接关系的三元组
-
-(13) **get_model_input_size** 获取模型输入尺寸
+(12) **get_model_input_size** 获取模型输入尺寸
 
 .. code-block:: bash
     :linenos:
@@ -209,23 +190,7 @@ API 文档
     输出:
     'sample_input_size' :网络模型的输入尺寸
 
-(14) **linear_connections_trans** 全连接层连接矩阵转换三元组
-
-.. code-block:: bash
-    :linenos:
-
-    linear_connections_trans(weight_matrix, input_size, input_neuron_ids, output_neuron_ids):
-
-    功能:将全连接层的连接矩阵转换为描述连接关系的三元组
-    输入:
-    'weight_matrix' :二维权重矩阵，形状为（输出，输入）
-    'input_size' :连接的输入spike层神经元数量
-    'input_neuron_ids' :连接的输入spike层神经元ID列表
-    'output_neuron_ids' :连接的输出spike层神经元ID列表
-    输出:
-    'connections' :描述连接关系的三元组
-
-(15) **get_net_info** 获取网络参数
+(13) **get_net_info** 获取网络参数
 
 .. code-block:: bash
     :linenos:
@@ -241,7 +206,7 @@ API 文档
     'layer_sizes' :脉冲神经网络层数
     'total_params' :脉冲神经网络所有参数
 
-(16) **output_transfer** 输出数据转换保存
+(14) **output_transfer** 输出数据转换保存
 
 .. code-block:: bash
     :linenos:
