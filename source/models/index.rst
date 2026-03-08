@@ -8,6 +8,6 @@
 
    mlp
    cnn
-   resnet
    lnn
+..   resnet
    transformer
