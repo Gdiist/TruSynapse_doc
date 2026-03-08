@@ -8,11 +8,11 @@ TruSynapse 框架
 通用处理器核采取指令乱序超标量结构，支持SIMD和矩阵运算，实现高性能数值计算。类脑功能部件采用了融合存内计算、近存计算和共享内存等多种关键技术，支持脑启发神经网络，实现连接计算。
 
 .. figure:: ../_static/images/tru_synapse_processor_architecture.png
-   :alt: TruSynapse Processor Architecture
+   :alt: Processor Architecture
    :width: 50%
    :align: center
 
-   图1 TruSynapse 处理器架构示意图
+   图1 处理器架构示意图
 
 
 软件架构与层次视图

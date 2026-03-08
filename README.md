@@ -1,6 +1,6 @@
 # TruSynapse Documentation
 
-TruSynapse 是一个脉冲神经网络（Spiking Neural Network, SNN）框架，旨在为类脑计算提供高效的开发和部署平台。
+TruSynapse 是一个为TruthSouth芯片开发的编程框架，旨在为类脑计算提供高效的开发和部署平台。
 
 ## 文档结构
 
