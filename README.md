@@ -28,9 +28,10 @@ source/
 
 ## 在线文档
 
-文档发布在 GitHub Pages 上：
+文档发布在以下平台：
 
-**https://gdiist.github.io/TruSynapse_doc/**
+- **GitHub Pages**: https://gdiist.github.io/TruSynapse_doc/
+- **GitLab Pages**: https://tru-synapse-doc-d9b01e.gitlab.io/
 
 ## 本地构建
 
