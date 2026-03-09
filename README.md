@@ -14,15 +14,14 @@ source/
 ├── models/                 # 神经网络模型示例
 │   ├── mlp.rst             # 多层感知机
 │   ├── cnn.rst             # 卷积神经网络
-│   ├── lnn.rst             # 液态神经网络
-│   ├── resnet.rst          # 残差网络
-│   └── transformer.rst     # Transformer
+│   └── lnn.rst             # 液态神经网络
 ├── applications/           # 应用场景
 │   ├── image_classification.rst
 │   ├── speech_recognition.rst
 │   ├── autonomous_driving.rst
 │   └── brain_simulation.rst
 ├── higher_level_use/       # 高级用法
+│   └── neuron_model.rst    # 神经元模型
 └── api_datastruct_documentation/  # API 参考
 ```
 
