@@ -39,7 +39,7 @@
    :width: 50%
    :align: center
 
-   图一：LNN网络结构示例
+   LNN网络结构示例
 
 
 

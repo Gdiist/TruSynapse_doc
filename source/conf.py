@@ -22,7 +22,7 @@ copyright = '2026, Gdiist'
 author = 'Gdiist'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '1.0.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -72,6 +72,10 @@ latex_elements = {
 \setCJKmainfont{STSong}
 \XeTeXlinebreaklocale "zh"
 \XeTeXlinebreakskip = 0pt plus 1pt
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\setlength{\headheight}{13.6pt}
+\addtolength{\topmargin}{-1.6pt}
 '''
 }
 
