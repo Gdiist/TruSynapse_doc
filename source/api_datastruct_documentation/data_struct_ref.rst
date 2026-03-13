@@ -51,7 +51,7 @@ HDF5文件接口相关数据结构
 
     类内部函数说明
 
-     - :ref:`函数说明<label_spikeprocessor_Mfuncs>` 
+    - :ref:`函数说明<label_spikeprocessor_Mfuncs>` 
 
 .. code-block:: bash
     :class: wrap-code
@@ -72,13 +72,14 @@ HDF5文件接口相关数据结构
         def process_spikes(self, input_data: list[int], mode: str = 'integer') :
 
 **输入**:
-total_timesteps: 时间步范围(range规则)[起始时间步，终止时间步]
-    此外，还有以下规则
-    1. 必须为长度为 2 的列表
-    2. 所有值必须 ≥ 0
-    3. 起始时间步 ≤ 终止时间步
-    4. 特殊值 [0, 0]：启用自动记录模式，时间步0开始，原始脉冲输出列表中的最后发放脉冲的时间步+1，作为终止时间步
-    5. 特殊行为: 当起始时间步等于终止时间步时，视为转换当前时间步，按range规则，自动将终止时间步 + 1
+
+| total_timesteps: 时间步范围，**[起始时间步，终止时间步] (range规则)**
+| 此外，还有以下规则
+| 1. 必须为长度为 **2** 的列表
+| 2. 所有值必须 **大于0**
+| 3. 起始时间步必须 **小于** 终止时间步
+| 4. 特殊值 [0, 0]：启用自动记录模式，时间步0开始，原始脉冲输出列表中的最后发放脉冲的时间步+1，作为终止时间步
+| 5. 特殊行为: 当起始时间步等于终止时间步时，视为转换当前时间步，按range规则，自动将终止时间步 + 1
 
 
 
@@ -129,7 +130,7 @@ NFU驱动（C语言）相关数据结构
 
     类内部函数说明：
 
- - :ref:`函数说明<label_SNNDriver_Mfuncs>`
+    - :ref:`函数说明<label_SNNDriver_Mfuncs>`
 
     .. code-block:: bash
         :class: wrap-code
@@ -145,5 +146,5 @@ NFU驱动（C语言）相关数据结构
             # 释放输出内存    
             def free_output(self, data)
 
-    **输入**:
-        - lib_path: C库文件路径，默认为'./libsnndriver.so'
+**输入**:
+    - lib_path: C库文件路径，默认为'./libsnndriver.so'
