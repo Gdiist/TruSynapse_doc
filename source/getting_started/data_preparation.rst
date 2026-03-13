@@ -250,6 +250,7 @@
 * ``inputneuronlist_data``: 输入神经元映射列表数据，用于定义输入数据如何映射到NFU的输入神经元；
 * ``neuronbase_data``: 神经元状态空间数据，存储SNN网络中每个神经元的状态；
 * ``register_paras``: NFU的寄存器参数，为硬件参数，如下：
+* ``outputneuronid_map``: 输出神经元物理ID映射表，存储了输出层神经元的物理ID，列表索引值为逻辑神经元号，可用于映射物理ID和逻辑ID
 
     * ``neuronbase_param``: 神经元状态空间区域的偏移量，表示神经元基地址相对于物理内存起始地址的偏移；
     * ``connection_param``: 连接权重数据区域的偏移量，表示连接数据区域相对于物理内存起始地址的偏移；
@@ -268,12 +269,37 @@
   :align: center
   :class: top-align-table excel-style-table
   
-  * - 自有格式HDF5文件参数存储形式        
+  * - 自有格式HDF5文件参数存储形式
+    -  
     - 自有格式HDF5文件实际文件结构
   * -
     -
-  * - .. figure:: /_static/images/hdf5_structure.png
-          :alt: hdf5_structure
+    -
+  * - .. list-table::
+        :align: center
+        
+        * - ——————————————
+        * - 版本号
+        * - 整个SNN网络基本信息
+        * - ——————————————
+        * - **NFU子网1**
+        * - 输入神经元映射列表
+        * - 神经元状态信息
+        * - 神经元网络连接关系
+        * - NFU寄存器参数
+        * - 输出神经元物理ID映射表
+        * - ——————————————
+        * - **NFU子网2**
+        * - 输入神经元映射列表
+        * - 神经元状态信息
+        * - 神经元网络连接关系
+        * - NFU寄存器参数
+        * - 输出神经元物理ID映射表
+        * - ——————————————
+        * - **NFU子网3**
+        * - ...
+        * - ——————————————
+    -
     - .. figure:: /_static/images/hdf5_file.png
           :alt: hdf5_file
 

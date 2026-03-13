@@ -8,11 +8,11 @@
 
 .. _label_paras_process:
 
-(1) **paras_process** 类
+(1) **paras_process** 参数处理类
 
 该类作为 HDF5 接口的核心功能载体，承担 HDF5 参数的写入与读取操作；同时完成 HDF5 参数、输入脉冲数据及神经元模型参数的整合与预处理，并将其转换为ctypes结构体 ``SNNData``，向下传递至 C 语言实现的 NFU 驱动模块。
 
-类内部函数说明（点击跳转） 
+类内部函数说明
 
  - :ref:`主要函数<label_parasprocess_Mfuncs>`
  - :ref:`内部功能函数<label_path_process>`
@@ -42,10 +42,48 @@
         # 内部功能，读取十进制或十六进制文件
         def read_decorhex_file(self,filename)
 
+.. _label_spikeprocessor:
+
+(2) **SpikeProcessor** 输出脉冲处理类
+
+该类是一个用于处理NFU输出脉冲数据的转换类。负责解码原始脉冲数据，并根据输出层神经元物理ID映射表，将脉冲信号转换为可读的二进制字符串或整数格式。
+
+类内部函数说明
+
+ - :ref:`函数说明<label_spikeprocessor_Mfuncs>` 
+
+.. code-block:: bash
+    :class: wrap-code
+
+    # 原始脉冲输出处理类
+    class SpikeProcessor:
+        # 初始化类，设置需要转换的时间步范围    
+        def __init__(self, total_timesteps: list[int] = [0,0]):
+        # 获取输出层神经元物理ID映射表
+        def set_output_map(self, output_map: list[int]):
+        # 解码输出脉冲
+        def decode_spike(self, raw: int):
+        # 将输出结果转换为字符串列表
+        def _results_to_strings(self, timestep_data: dict, total_timesteps: list) -> list[str]:
+        # 将输出结果转换为整形列表        
+        def _results_to_integer(self, timestep_data: dict, total_timesteps: list) -> list[int]:
+        # 处理输出脉冲
+        def process_spikes(self, input_data: list[int], mode: str = 'integer') :
+
+    输入:
+    total_timesteps: 时间步范围(range规则)[起始时间步，终止时间步]
+        此外，还有以下规则
+        1. 必须为长度为 2 的列表
+        2. 所有值必须 ≥ 0
+        3. 起始时间步 ≤ 终止时间步
+        4. 特殊值 [0, 0]：启用自动记录模式，时间步0开始，原始脉冲输出列表中的最后发放脉冲的时间步+1，作为终止时间步。
+        5. 特殊行为: 当起始时间步等于终止时间步时，视为转换当前时间步，按range规则，自动将终止时间步 + 1
+
+
 二、NFU驱动（C语言）相关数据结构
 ------------------------------------
 
-(1) **SNNData** 类
+(1) **SNNData** 参数传递类
 
 该类是一个基于 ``ctypes.Structure`` 构建的类，用于定义SNN计算所需的数据结构。这个结构体与C库中的对应定义保持一致，作为Python与C库之间的数据传输桥梁。
 
@@ -81,36 +119,27 @@
 - ``output_data``: 用于保存NFU的计算结果，由驱动在计算完成后填充；
 - ``_len`` 字段: 对应数据数组的元素数量
 
-(2) **SNNDriver** 类
+(2) **SNNDriver** NFU驱动类
 
 该类是一个封装类，用于调用C共享库执行SNN计算。
 
-类内部函数说明（点击跳转） 
+类内部函数说明 
 
- - :ref:`主要函数<label_SNNDriver_Mfuncs>`
+ - :ref:`函数说明<label_SNNDriver_Mfuncs>`
 
 .. code-block:: bash
     :class: wrap-code
 
     class SNNDriver:
-        """SNN驱动封装类，用于调用C库函数"""
+        """SNN驱动封装类，用于调用C库函数"""        
+        # 初始化类，设置C库文件路径
         def __init__(self, lib_path='./libsnndriver.so'):
-            """初始化驱动，加载C共享库"""
-            if not os.path.exists(lib_path):
-                raise FileNotFoundError(f"SNN库文件不存在: {lib_path}")
-            # 加载C共享库
-            self.lib = ctypes.CDLL(lib_path)
-            # 设置C函数原型
-            self.lib.snn_execute.restype = c_int
-            self.lib.snn_execute.argtypes = [POINTER(SNNData)]
-            self.lib.snn_get_last_error.restype = c_char_p
-            self.lib.snn_get_last_error.argtypes = []
-            self.lib.snn_free_output.restype = None
-            self.lib.snn_free_output.argtypes = [POINTER(SNNData)]
-        
         # 获取最后一次错误信息
         def get_last_error(self)
         # 执行SNN计算   
         def execute(self, data)
         # 释放输出内存    
         def free_output(self, data)
+
+    输入:
+    'lib_path': C库文件路径，默认为'./libsnndriver.so'

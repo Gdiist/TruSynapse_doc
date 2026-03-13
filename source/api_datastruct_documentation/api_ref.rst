@@ -387,7 +387,22 @@ API 文档
 
     功能:接收字典型的网络参数，并按要求保存为HDF5文件。
     输入:
-    'paras': 字典，包含需要存入HDF5文件里的所有参数
+    'paras': 字典，包含需要存入HDF5文件里的所有参数。格式要求如下：
+        '''
+        netparas 要求传进来的格式为多维字典的形式，但最后一层是列表，除列表外，字典的命名需严格按照示例命名,格式示例如下
+
+        register_paras/connection_data/inputneuronlist_data/neuronbase_data/outputneuronid_map均为列表，且
+        register_paras/connection_data的元素类型为np.uint64，
+        inputneuronlist_data/neuronbase_data/neuronid_map的元素类型为np.uint32
+
+        subnet1 = {'register_paras': register_paras1,'connection_data': connection_data1,
+                   'inputneuronlist_data': inputneuronlist_data1,'neuronbase_data': neuronbase_data1,'outputneuronid_map': outputneuronid_map1}
+        subnet2 = {'register_paras': register_paras2,'connection_data': connection_data2,
+                   'inputneuronlist_data': inputneuronlist_data2,'neuronbase_data': neuronbase_data2,'outputneuronid_map': outputneuronid_map2}
+        subnet3 = {'register_paras': register_paras3,'connection_data': connection_data3,
+                   'inputneuronlist_data': inputneuronlist_data3,'neuronbase_data': neuronbase_data3,'outputneuronid_map': outputneuronid_map3}
+        subnetlist = {'subnet1': subnet1, 'subnet2': subnet2, 'subnet3': subnet3}
+        '''
     'output_file_path': 字符串，文件输出路径，为存储 NFU所需数据的文件（包含子网参数、结构信息等），供后续 C 库解析，默认采用 HDF5 格式存储。支持hdf5/HDF5/H5/h5多种HDF5后缀名。
     输出:
     HDF5文件: 包含所有参数的HDF5文件，供后续 C 库解析使用。
@@ -404,8 +419,8 @@ API 文档
     功能:按要求读取出HDF5文件数据。
     输入:
     'path': 字符串，文件输入路径，为符合格式的HDF5文件，路径支持hdf5/HDF5/H5/h5多种HDF5后缀名。
-    'net_num': 整形，子网编号，指定从HDF5文件中读出几号子网，-1表示一次性读出全部子网。
-    'paras_name': 字符串，子网参数名称，指定从子网中读出某个参数，“all”“connection_data”、“inputneuronlist_data”、“neuronbase_data”“register_paras”，默认“all”读出全部参数。
+    'net_num': 整型，子网编号，指定从HDF5文件中读出几号子网，-1表示一次性读出全部子网。
+    'paras_name': 字符串，子网参数名称，指定从子网中读出某个参数，“all”“connection_data”、“inputneuronlist_data”、“neuronbase_data”“register_paras”“outputneuronid_map”，默认“all”读出全部参数。
     输出:
     'subnetlist': 字典，包含按要求从HDF5文件里的读出的参数，读出的格式为“{'NFUnet子网编号': {'参数名': 参数内容...}...}”，如{'NFUnet1': {'register_paras': [0, 1048576, 1125889]}, 'NFUnet2': {'register_paras': [1, 123441, 131875]}}
 
@@ -427,8 +442,8 @@ API 文档
     'spikes_in_path': 字符串，文件输入路径，为SNN网络的输入脉冲文件，仅支持txt格式，每行代表一个脉冲事件。
     'neurondata_in_path': 字符串，文件输入路径，为神经元模型的参数文件，定义神经元模型；
     'subnetsandparas_in_path': 字符串，文件输入路径，为符合格式的HDF5文件，路径支持hdf5/HDF5/H5/h5多种HDF5后缀名。
-    'subnet_num': 整形，子网编号，指定从HDF5文件中读出几号子网，-1表示一次性读出全部子网。
-    'subnet_paras_name': 字符串，子网参数名称，指定从子网中读出某个参数，“all”“connection_data”、“inputneuronlist_data”、“neuronbase_data”“register_paras”，默认“all”读出全部参数。
+    'subnet_num': 整型，子网编号，指定从HDF5文件中读出几号子网，-1表示一次性读出全部子网。
+    'subnet_paras_name': 字符串，子网参数名称，指定从子网中读出某个参数，“all”“connection_data”、“inputneuronlist_data”、“neuronbase_data”“register_paras”“outputneuronid_map”，默认“all”读出全部参数。
     输出:
     'SNNData': 实例化对象，为ctypes结构体，该ctypes结构体实现 Python 与 C 语言的内存数据互通，确保 Python 侧构造的SNNData实例，其内存布局及字段类型与 C 端 NFU 驱动中定义的SNNData结构体完全对齐，支持 Python 侧参数直接传递至 C 语言函数调用。
 
@@ -449,7 +464,7 @@ API 文档
     'spikes_in_path': 字符串，文件输入路径，为SNN网络的输入脉冲文件，仅支持txt格式，每行代表一个脉冲事件。
     'neurondata_in_path': 字符串，文件输入路径，为神经元模型的参数文件，定义神经元模型。
     'subnetsandparas_in_path': 字符串，文件输入路径，为符合格式的HDF5文件，路径支持hdf5/HDF5/H5/h5多种HDF5后缀名。
-    'subnet_num': 整形，子网编号，指定从HDF5文件中读出几号子网，-1表示一次性读出全部子网。
+    'subnet_num': 整型，子网编号，指定从HDF5文件中读出几号子网，-1表示一次性读出全部子网。
     输出:
     'output_results': 列表，为NFU计算完的原始结果，需要处理，注意，输出脉冲列表中的首个“1”表示存在输出，此为标志位，并非实际的输出脉冲，实际输出脉冲应从列表第二个元素开始计算。
 
@@ -639,9 +654,9 @@ API 文档
     功能:接收路径参数，并使用校验/创建模式处理路径（只支持HDF5/JSON的文件后缀）。
     输入:
     'path': 字符串，输入路径；
-    'mode': 字符串，模式，分别为“check”和“create”两种模式，“check”模式为校验模式，“create”为创建模式，该函数标准化路径后，校验模式验证含文件名的路径合法性并返回扩展名，不通过则抛异常；创建模式优先创建自定义路径，失败则降级用默认路径，同时为避免覆盖文件，文件名从 0 开始递增序号生成唯一文件路径，自动处理异常并返回有效结果
+    'mode': 字符串，模式，分别为“check”和“create”两种模式，“check”模式为校验模式，“create”为创建模式，该函数标准化路径后，校验模式验证含文件名的路径合法性并返回扩展名，不通过则抛异常；创建模式优先创建自定义路径，失败则降级用默认路径，同时为避免覆盖文件，文件名重复时会自动编号，自动处理异常并返回有效结果
     输出:
-    'ext_name|new_file_path':  字符串，校验模式返回文件扩展名，创建模式返回使用的路径。
+    'ext_name或new_file_path':  字符串，校验模式返回文件扩展名，创建模式返回使用的路径。
 
 (4) **_nested_depth** 计算嵌套层数
 
@@ -655,7 +670,7 @@ API 文档
     输入:
     'obj': 实例化对象，需要判断层数的字典。
     输出:
-    整形，返回深度层数。
+    整型，返回深度层数。
 
 (5) **read_decorhex_file** 读取十进制或十六进制文件
 
@@ -685,3 +700,80 @@ API 文档
     输出:
     列表，返回解析后的整数列表。 
 
+.. _label_spikeprocessor_Mfuncs: 
+
+(7) **set_output_map** 设置神经元ID映射表
+
+.. code-block:: bash
+    :class: wrap-code
+
+    set_output_map(self, output_map: list[int]) :
+    属于SpikeProcessor类
+
+    功能:把映射表转为无GNC号的物理ID的形式。输入的是输出层神经元的GNC号 + 物理ID号。
+    输入:
+    'output_map': 列表，输出层神经元的含GNC号的物理ID列表。
+
+(8) **decode_spike** 解码输出脉冲
+
+.. code-block:: bash
+    :class: wrap-code
+
+    decode_spike(self, raw: int):
+    属于SpikeProcessor类
+
+    功能:解码原始输出脉冲列表里的信号，转换成时间步 + GNC号 + 神经元物理ID号。
+    输入:
+    'raw': 列表，原始输出脉冲列表。
+    输出:
+    'time_step': 整型，时间步。
+    'gnc_id': 整型，GNC号。
+    'neuron_id': 整型，神经元物理ID号。
+
+(9) **_results_to_strings** 输出结果转换为字符串
+
+.. code-block:: bash
+    :class: wrap-code
+
+    _results_to_strings(self, timestep_data: dict, total_timesteps: list) -> list[str]:
+    属于SpikeProcessor类
+
+    功能:将输出结果转换为'0''1'字符串列表。从映射表读出物理ID的顺序，和写入局部逻辑ID的顺序一样，都是从左到右。
+
+    输入:
+    'timestep_data': 字典，以时间步为单位的所有神经元的脉冲数据。
+    'total_timesteps': 列表，需要转换的时间步列表，range格式[起始时间步，终止时间步]
+    输出:
+    'results': 列表，处理后的脉冲列表，列表索引为时间步，元素内容'0''1'字符串，使用二进制字符串表示神经元发放状态，从左到右依次对应逻辑神经元 0, 1, 2...
+
+(10) **_results_to_integer** 输出结果转换为整型
+
+.. code-block:: bash
+    :class: wrap-code
+
+    _results_to_integer(self, timestep_data: dict, total_timesteps: list) -> list[int]:
+    属于SpikeProcessor类
+
+    功能:将输出结果转换为整型数字列表。从映射表读出物理ID的顺序是从左到右，写入局部逻辑ID的顺序是从右到左。
+
+    输入:
+    'timestep_data': 字典，以时间步为单位的所有神经元的脉冲数据。
+    'total_timesteps': 列表，需要转换的时间步列表，range格式[起始时间步，终止时间步]
+    输出:
+    'results': 列表，处理后的脉冲列表，列表索引为时间步，元素内容整形数字，使用位掩码表示神经元发放状态，从右到左依次对应逻辑神经元 0, 1, 2...
+
+(11) **process_spikes** 处理原始输出脉冲结果
+
+.. code-block:: bash
+    :class: wrap-code
+
+    process_spikes(self, input_data: list[int], mode: str = 'integer') :
+    属于SpikeProcessor类
+
+    功能:将原始输出脉冲列表转换为易处理的字符串或整型数字的形式。该函数会调用内部功能函数 _results_to_strings 或 _results_to_integer，进行转换。
+
+    输入:
+    'input_data': 列表，原始脉冲输出数据。
+    'mode': 字符串，转换模式，为'integer'或'string'，分别表示转换为整型数字或字符串，默认整型模式。
+    输出:
+    'results': 列表，处理后的脉冲列表，列表索引为时间步，元素内容表示神经元发放的情况。

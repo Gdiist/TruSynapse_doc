@@ -219,7 +219,7 @@ NFU 直接输出结果以 32 位无符号整数表示，各字段含义如下：
 =====================
 概述
 ------
-对于已经处理好，且参数保存至HDF5文件中的神经网络，用户可以直接从多个文件中加载参数构造子网执行体，并调用NFU驱动进行执行。此方法无需网络处理步骤。
+对于已经处理好，且参数保存至HDF5文件中的神经网络，用户可以直接从多个文件中加载参数构造子网执行体，并调用NFU驱动进行执行，最终得到输出结果并进行处理。此方法无需网络处理步骤。
 
 1. 文件说明
 --------------
@@ -233,7 +233,6 @@ NFU 直接输出结果以 32 位无符号整数表示，各字段含义如下：
 
 .. figure:: ../_static/images/workflow.png
    :align: center
-   :width: 80%
    :alt: 整体流程示意图
 
 3. 示例代码
@@ -246,8 +245,6 @@ NFU 直接输出结果以 32 位无符号整数表示，各字段含义如下：
 
 1. 定义一个三层前馈SNN网络（MnistSNN），包含两个全连接层和LIF神经元；
 2. 用net_process()函数，将网络结构、连接权重和输入数据转换为HDF5格式的参数文件。
-
-**参考**
 
 函数说明：
  - :ref:`net_process模块<label_net_process>`
@@ -286,7 +283,7 @@ NFU 直接输出结果以 32 位无符号整数表示，各字段含义如下：
         # 实例化网络
         SNN_net = MnistSNN()
         # 如果想要存入hdf5的参数，可用变量获取net_process的返回值，如 paras = net_process(...)
-        # 为防止重复，指定的HDF5输出路径会进行校验检查，且路径中的文件名会自动添加一个后缀“_0”，故最终输出文件为“subnet_data_0.hdf5”
+        # 指定的HDF5输出路径会进行校验检查，且为防止重复，文件名相同时会自动编号，如：subnet_data.hdf5 -> subnet_data_1.hdf5。
         net_process(SNN_net,connection_path="./snn_data/connections.pkl",
                             inputdata_path="./snn_data/inputspike.txt",
                             output_file_path="./snn_data/subnet_data.hdf5")
@@ -301,12 +298,6 @@ NFU 直接输出结果以 32 位无符号整数表示，各字段含义如下：
 
 1. 实例化 ``paras_process`` 类
 2. 调用类中的 ``XXX_input_compute`` 函数执行计算
-
-**参考**
-
-输出脉冲说明：
- - 注意: 输出脉冲列表中的首个“1”表示存在输出，此为标志位，并非实际的输出脉冲，实际输出脉冲应从列表第二个元素开始计算；
- - 输出脉冲的格式: 一个输出脉冲数据共32位，其中0~13为物理神经元号，14~17为GNC号，17~31为时间步数。
 
 函数说明：
  - :ref:`paras_process类<label_paras_process>`
@@ -325,7 +316,7 @@ NFU 直接输出结果以 32 位无符号整数表示，各字段含义如下：
         # 解析文件内的数据，并开始计算
         source_results = files_input_compute(spikes_in_path="./snn_data/inputspike.txt",
                                                 neurondata_in_path="./snn_data/neuron.data",
-                                                subnetsandparas_in_path = "./snn_data/subnet_data_0.hdf5",
+                                                subnetsandparas_in_path = "./snn_data/subnet_data.hdf5",
                                                 subnet_num = 1)
         
         #------------------------------方式二----------------------------------
@@ -337,7 +328,7 @@ NFU 直接输出结果以 32 位无符号整数表示，各字段含义如下：
         # 构建SNNData对象，解析参数
         snndata = process.parse_collect_to_struct(spikes_in_path="./snn_data/inputspike.txt",
                                                 neurondata_in_path="./snn_data/neuron.data",
-                                                subnetsandparas_in_path = "./snn_data/subnet_data_0.hdf5",
+                                                subnetsandparas_in_path = "./snn_data/subnet_data.hdf5",
                                                 subnet_num = 1)
         
         # 输入对象并开始计算
@@ -348,6 +339,119 @@ NFU 直接输出结果以 32 位无符号整数表示，各字段含义如下：
         
     if __name__ == "__main__":
         main()
+
+(3) 处理原始输出结果
+~~~~~~~~~~~~~~~~~~~~~~
+
+**注意**: 原始输出脉冲列表中的 **首个“1”表示存在输出**，此为 **标志位**，并非实际的输出脉冲，实际输出脉冲应从列表第二个元素开始计算。
+
+.. list-table:: NFU 输出数据格式（32位）
+    :header-rows: 1
+    :align: center
+    :widths: 20 20 60
+
+    * - 位范围
+      - 字段名
+      - 说明
+    * - [31:17] (15bit)
+      - timestep
+      - 时间步信息，表示该神经元输出是在哪个时间步产生的
+    * - [16:13] (4bit)
+      - GNC号
+      - 输出层神经元所在的 GNC 编号
+    * - [12:0] (13bit)
+      - 物理ID
+      - 该神经元的物理编号
+
+各类ID号的说明：
+    - 输出层神经元物理ID号: 输出层神经元对应的物理ID号， **不含GNC号**。
+    - 输出层神经元局部逻辑ID号: 输出层 **本层** 的神经元从0开始的逻辑ID号。
+    - 逻辑ID号与物理ID号对应关系： **逻辑ID号是软件层使用的ID号，物理ID号是硬件层使用的ID号**。二者之间互相映射，但逻辑ID号是连续的， **物理ID号不一定是连续的** ，因为两个相邻的逻辑神经元可能会映射到不相邻的物理神经元上。
+        
+        - 示例：若存在一个网络，输出层逻辑ID是0、1，但其物理ID可以为1号GNC的3号神经元、2号GNC的235号神经元。
+    - 全局ID号和局部ID号的关系：全局是指当前神经元在整个SNN中 **全局唯一** 的ID号，局部是指当前神经元在当前层中的ID号。
+        
+        - 示例：若存在一个网络，输入层和隐藏层有7个神经元，输出层有2个神经元，那么它们的神经元全局ID号为7、8，它们的输出层局部ID号为0、1。
+
+| 从神经元的物理ID号，转换为输出层神经元局部逻辑ID号的说明如下：
+| 1. 局部逻辑ID号 **从0开始计算** 。
+| 2. 选择 ``integer`` 模式，在一个时间步中的输出神经元的排序是， **从右到左**，整型表示。
+|  选择 ``string`` 模式，在一个时间步中的输出神经元的排序是， **从左到右**， ``0`` ``1`` 字符串表示。
+
+| 假设有3个输出层神经元按如下规则发放（共10个时间步）：
+| 时间步3：0号和1号发放；
+| 时间步5：1号发放；
+| 时间步7：1号和2号发放，其他时间步不发放。
+
+.. list-table:: 
+    :header-rows: 1
+    :align: center
+
+    * - 
+      - 0号神经元
+      - 1号神经元
+      - 2号神经元
+    * - 时间步3
+      - 发放(1)
+      - 发放(1)
+      - 不发放(0)
+    * - 时间步5
+      - 不发放(0)
+      - 发放(1)
+      - 不发放(0)
+    * - 时间步7
+      - 不发放(0)
+      - 发放(1)
+      - 发放(1)
+
+| 则结果为
+| ``integer`` 模式： ``results = [0, 0, 0, 3, 0, 2, 0, 6, 0, 0]``
+    
+    - 第3个时间步的结果拆解为： ``results[3] = 0b011 = 3`` ，表示0号和1号神经元发放；
+    - 第5个时间步的结果拆解为： ``results[5] = 0b010 = 2`` ，表示1号神经元发放；
+    - 第7个时间步的结果拆解为： ``results[7] = 0b110 = 6`` ，表示1号和2号神经元发放。
+
+| ``string`` 模式： ``results = ['000', '000', '000', '110', '000', '010', '000', '011', '000', '000']``
+
+    - 第3个时间步的结果拆解为： ``results[3] = ['110']`` ，表示0号和1号神经元发放；
+    - 第5个时间步的结果拆解为： ``results[5] = ['010']`` ，表示1号神经元发放；
+    - 第7个时间步的结果拆解为： ``results[7] = ['011']`` ，表示1号和2号神经元发放。
+
+以下是处理原始输出结果代码示例：
+
+函数说明：
+ - :ref:`paras_process类<label_paras_process>`
+ - :ref:`spikeprocessor类<label_spikeprocessor>` 
+
+.. code-block:: python
+    :linenos:
+    
+    from net_to_run import *
+    def main():
+        # 示例数据，需要转换的原始输出时间步(range格式)[起始时间步，终止时间步]
+        # [0,0] 自动以最后一次发放脉冲的时间步作为最大时间步
+        total_timesteps = [0,0]
+        # 示例数据，原始输出脉冲列表
+        source_results1 = [1, 655369, 917514, 917513]
+        source_results2 = [1, 524298, 524297, 524296, 786442, 786441, 786440, 1179658, 1179657, 1179656]   
+        source_results = source_results1
+        # 获取输出层神经元物理ID映射表
+        output_map_dict = paras_process.load_file("./snn_data/subnet_data.hdf5", net_num = 1, paras_name = "outputneuronid_map")
+        output_map = output_map_dict["NFUnet1"]["outputneuronid_map"]
+        # 设置输出脉冲时间步的总数量
+        processor = SpikeProcessor(total_timesteps)
+        # 导入输出层神经元物理ID映射表
+        processor.set_output_map(output_map)
+        # 导入原始输出数据，开始转换并得到转换结果
+        results1 = processor.process_spikes(source_results,mode = 'integer')
+        results2 = processor.process_spikes(source_results,mode = 'string')
+        # 打印转换结果
+        print(results1)
+        print(results2)
+
+    if __name__ == "__main__":
+        main()
+
 
 
 三、搭建混合神经网络
