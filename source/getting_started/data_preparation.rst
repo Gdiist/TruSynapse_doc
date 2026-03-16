@@ -270,36 +270,11 @@
   :class: top-align-table excel-style-table
   
   * - 自有格式HDF5文件参数存储形式
-    -  
     - 自有格式HDF5文件实际文件结构
   * -
     -
-    -
-  * - .. list-table::
-        :align: center
-        
-        * - ——————————————
-        * - 版本号
-        * - 整个SNN网络基本信息
-        * - ——————————————
-        * - **NFU子网1**
-        * - 输入神经元映射列表
-        * - 神经元状态信息
-        * - 神经元网络连接关系
-        * - NFU寄存器参数
-        * - 输出神经元物理ID映射表
-        * - ——————————————
-        * - **NFU子网2**
-        * - 输入神经元映射列表
-        * - 神经元状态信息
-        * - 神经元网络连接关系
-        * - NFU寄存器参数
-        * - 输出神经元物理ID映射表
-        * - ——————————————
-        * - **NFU子网3**
-        * - ...
-        * - ——————————————
-    -
+  * - .. figure:: /_static/images/hdf5_storage_format.png
+          :alt: hdf5_storage_format
     - .. figure:: /_static/images/hdf5_file.png
           :alt: hdf5_file
 

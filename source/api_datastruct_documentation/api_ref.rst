@@ -9,7 +9,7 @@ API 文档
 .. _api_assign_neuron_ids_1d:
 
 assign_neuron_ids_1d
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
     :class: wrap-code
@@ -27,7 +27,7 @@ assign_neuron_ids_1d
 .. _api_assign_neuron_ids_2d:
 
 assign_neuron_ids_2d
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
     :class: wrap-code
@@ -45,7 +45,7 @@ assign_neuron_ids_2d
 .. _api_assign_neuron_ids_3d:
 
 assign_neuron_ids_3d
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
     :class: wrap-code
@@ -461,9 +461,6 @@ convert_paras
     输入:
     'path' : 字符串，文件输出路径，为存储NFU所需数据的文件（包含子网参数、结构信息等），供后续C库解析，默认采用HDF5格式存储。支持hdf5/HDF5/H5/h5多种HDF5后缀名
     'netparas' : 字典，包含需要存入HDF5文件里的所有参数。格式要求如下：
-
-.. code-block:: bash
-    :class: wrap-code
 
     netparas 要求传进来的格式为多维字典的形式，但最后一层是列表，除列表外，字典的命名需严格按照示例命名
 
